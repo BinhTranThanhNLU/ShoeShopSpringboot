@@ -1,52 +1,19 @@
 package com.ecommerce.shoeshop.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryDTO {
     private int id;
     private String name;
     private String description;
     private List<CategoryDTO> subCategories;
-
-    public CategoryDTO() {
-    }
-
-    public CategoryDTO(int id, String name, String description, List<CategoryDTO> subCategories) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.subCategories = subCategories;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<CategoryDTO> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(List<CategoryDTO> subCategories) {
-        this.subCategories = subCategories;
-    }
 }

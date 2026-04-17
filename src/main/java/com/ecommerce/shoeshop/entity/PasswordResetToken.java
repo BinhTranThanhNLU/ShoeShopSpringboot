@@ -2,9 +2,15 @@ package com.ecommerce.shoeshop.entity;
 
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "password_reset_tokens")
 public class PasswordResetToken {
@@ -24,56 +30,5 @@ public class PasswordResetToken {
     private LocalDateTime expiry;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    public PasswordResetToken() {
-    }
-
-    public PasswordResetToken(int id, User user, String token, LocalDateTime expiry, LocalDateTime createdAt) {
-        this.id = id;
-        this.user = user;
-        this.token = token;
-        this.expiry = expiry;
-        this.createdAt = createdAt;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getExpiry() {
-        return expiry;
-    }
-
-    public void setExpiry(LocalDateTime expiry) {
-        this.expiry = expiry;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
 
