@@ -22,15 +22,13 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
-//    private final GoogleAuthService googleAuthService;
+    private final GoogleAuthService googleAuthService;
 
-//    public AuthController(AuthService authService, GoogleAuthService googleAuthService) {
-//        this.authService = authService;
-//        this.googleAuthService = googleAuthService;
-//    }
-public AuthController(AuthService authService) {
-    this.authService = authService;
-}
+    public AuthController(AuthService authService, GoogleAuthService googleAuthService) {
+        this.authService = authService;
+        this.googleAuthService = googleAuthService;
+    }
+
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterRequest req) {
         UserDTO user = authService.register(req);
@@ -69,19 +67,19 @@ public AuthController(AuthService authService) {
         res.put("message", "Password reset successfully");
         return ResponseEntity.ok(res);
     }
-//
-//    @GetMapping("/google")
-//    public ResponseEntity<Map<String, String>> googleLogin() {
-//        String url = googleAuthService.getGoogleAuthUrl();
-//        Map<String, String> res = new HashMap<>();
-//        res.put("url", url);
-//        return ResponseEntity.ok(res);
-//    }
-//
-//    @GetMapping("/google/callback")
-//    public ResponseEntity<LoginResponse> googleCallback(@RequestParam("code") String code) throws Exception {
-//        String token = googleAuthService.handleGoogleCallback(code);
-//        UserDTO user = authService.getUserFromToken(token);
-//        return ResponseEntity.ok(new LoginResponse(token, user));
-//    }
+
+    @GetMapping("/google")
+    public ResponseEntity<Map<String, String>> googleLogin() {
+        String url = googleAuthService.getGoogleAuthUrl();
+        Map<String, String> res = new HashMap<>();
+        res.put("url", url);
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/google/callback")
+    public ResponseEntity<LoginResponse> googleCallback(@RequestParam("code") String code) throws Exception {
+        String token = googleAuthService.handleGoogleCallback(code);
+        UserDTO user = authService.getUserFromToken(token);
+        return ResponseEntity.ok(new LoginResponse(token, user));
+    }
 }

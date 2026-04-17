@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-//@Service
+@Service
 public class GoogleAuthService {
 
     @Value("${google.clientId}")
