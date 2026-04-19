@@ -93,6 +93,31 @@ public class CartService {
         return cartMapper.toDto(cart);
     }
 
+    @Transactional
+    public CartDTO clearCart(int userId) {
+        Cart cart = cartRepository.findByUser_Id(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user id: " + userId));
+
+        cart.getItems().clear();
+        cart.setUpdatedAt(LocalDateTime.now());
+        cartRepository.save(cart);
+
+        return cartMapper.toDto(cart);
+    }
+
+    @Transactional
+    public CartDTO removeItemFromCart(int userId, int cartItemId) {
+        CartItem item = cartItemRepository.findByIdAndCart_User_Id(cartItemId, userId)
+                .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + cartItemId));
+
+        Cart cart = item.getCart();
+        cart.getItems().remove(item);
+        cart.setUpdatedAt(LocalDateTime.now());
+        cartRepository.save(cart);
+
+        return getCartByUserId(userId);
+    }
+
     private Cart createCartForUser(User user) {
         LocalDateTime now = LocalDateTime.now();
         Cart cart = Cart.builder()
