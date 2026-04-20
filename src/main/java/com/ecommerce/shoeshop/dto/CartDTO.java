@@ -18,6 +18,9 @@ public class CartDTO {
     private int userId;
     private int totalItems;
     private BigDecimal totalPrice;
+    private BigDecimal shippingCost;
+    private BigDecimal grandTotal;
+    private ShippingMethodDTO shippingMethod;
     private List<CartItemDTO> items;
 }
 

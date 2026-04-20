@@ -3,19 +3,24 @@ package com.ecommerce.shoeshop.service;
 import com.ecommerce.shoeshop.dao.CartItemRepository;
 import com.ecommerce.shoeshop.dao.CartRepository;
 import com.ecommerce.shoeshop.dao.ProductVariantRepository;
+import com.ecommerce.shoeshop.dao.ShippingMethodRepository;
 import com.ecommerce.shoeshop.dao.UserRepository;
 import com.ecommerce.shoeshop.dto.CartDTO;
 import com.ecommerce.shoeshop.entity.Cart;
 import com.ecommerce.shoeshop.entity.CartItem;
 import com.ecommerce.shoeshop.entity.Product;
 import com.ecommerce.shoeshop.entity.ProductVariant;
+import com.ecommerce.shoeshop.entity.ShippingMethod;
 import com.ecommerce.shoeshop.entity.User;
 import com.ecommerce.shoeshop.mapper.CartMapper;
 import com.ecommerce.shoeshop.requestmodel.AddToCartRequest;
+import com.ecommerce.shoeshop.requestmodel.UpdateCartItemRequest;
+import com.ecommerce.shoeshop.requestmodel.UpdateShippingRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Service
@@ -25,17 +30,20 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductVariantRepository productVariantRepository;
     private final UserRepository userRepository;
+    private final ShippingMethodRepository shippingMethodRepository;
     private final CartMapper cartMapper;
 
     public CartService(CartRepository cartRepository,
                        CartItemRepository cartItemRepository,
                        ProductVariantRepository productVariantRepository,
                        UserRepository userRepository,
+                       ShippingMethodRepository shippingMethodRepository,
                        CartMapper cartMapper) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.productVariantRepository = productVariantRepository;
         this.userRepository = userRepository;
+        this.shippingMethodRepository = shippingMethodRepository;
         this.cartMapper = cartMapper;
     }
 
@@ -90,7 +98,13 @@ public class CartService {
         Cart cart = cartRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new RuntimeException("Cart not found for user id: " + userId));
 
-        return cartMapper.toDto(cart);
+        ShippingMethod shippingMethod = null;
+        if (cart.getShippingMethodId() != null) {
+            shippingMethod = shippingMethodRepository.findById(cart.getShippingMethodId())
+                    .orElse(null);
+        }
+
+        return cartMapper.toDto(cart, shippingMethod);
     }
 
     @Transactional
@@ -102,7 +116,13 @@ public class CartService {
         cart.setUpdatedAt(LocalDateTime.now());
         cartRepository.save(cart);
 
-        return cartMapper.toDto(cart);
+        ShippingMethod shippingMethod = null;
+        if (cart.getShippingMethodId() != null) {
+            shippingMethod = shippingMethodRepository.findById(cart.getShippingMethodId())
+                    .orElse(null);
+        }
+
+        return cartMapper.toDto(cart, shippingMethod);
     }
 
     @Transactional
@@ -112,6 +132,53 @@ public class CartService {
 
         Cart cart = item.getCart();
         cart.getItems().remove(item);
+        cart.setUpdatedAt(LocalDateTime.now());
+        cartRepository.save(cart);
+
+        return getCartByUserId(userId);
+    }
+
+    @Transactional
+    public CartDTO updateCartItem(int userId, int cartItemId, UpdateCartItemRequest request) {
+        CartItem item = cartItemRepository.findByIdAndCart_User_Id(cartItemId, userId)
+                .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + cartItemId));
+
+        Cart cart = item.getCart();
+        int productId = item.getVariant().getProduct().getId();
+
+        ProductVariant targetVariant = productVariantRepository
+                .findByProduct_IdAndColorIgnoreCaseAndSizeIgnoreCase(
+                        productId,
+                        request.getColor().trim(),
+                        request.getSize().trim())
+                .orElseThrow(() -> new RuntimeException("Khong tim thay bien the phu hop voi color/size da chon"));
+
+        if (request.getQuantity() > targetVariant.getStockQuantity()) {
+            throw new RuntimeException("So luong vuot qua ton kho hien tai");
+        }
+
+        CartItem existingTargetItem = cartItemRepository.findByCart_IdAndVariant_Id(cart.getId(), targetVariant.getId())
+                .orElse(null);
+
+        if (existingTargetItem != null && existingTargetItem.getId() != item.getId()) {
+            int mergedQuantity = existingTargetItem.getQuantity() + request.getQuantity();
+            if (mergedQuantity > targetVariant.getStockQuantity()) {
+                throw new RuntimeException("Tong so luong trong gio vuot qua ton kho hien tai");
+            }
+
+            existingTargetItem.setQuantity(mergedQuantity);
+            existingTargetItem.setPrice(getEffectivePrice(targetVariant.getProduct()));
+            cartItemRepository.save(existingTargetItem);
+
+            cart.getItems().remove(item);
+            cartItemRepository.delete(item);
+        } else {
+            item.setVariant(targetVariant);
+            item.setQuantity(request.getQuantity());
+            item.setPrice(getEffectivePrice(targetVariant.getProduct()));
+            cartItemRepository.save(item);
+        }
+
         cart.setUpdatedAt(LocalDateTime.now());
         cartRepository.save(cart);
 
@@ -138,9 +205,28 @@ public class CartService {
 
         BigDecimal discount = price
                 .multiply(BigDecimal.valueOf(discountPercent))
-                .divide(BigDecimal.valueOf(100));
+                .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
 
         return price.subtract(discount);
+    }
+
+    @Transactional
+    public CartDTO updateShippingMethod(int userId, UpdateShippingRequest request) {
+        Cart cart = cartRepository.findByUser_Id(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user id: " + userId));
+
+        ShippingMethod shippingMethod = shippingMethodRepository.findById(request.getShippingMethodId())
+                .orElseThrow(() -> new RuntimeException("Shipping method not found with id: " + request.getShippingMethodId()));
+
+        if (!shippingMethod.isActive()) {
+            throw new RuntimeException("Shipping method is not active");
+        }
+
+        cart.setShippingMethodId(shippingMethod.getId());
+        cart.setUpdatedAt(LocalDateTime.now());
+        cartRepository.save(cart);
+
+        return getCartByUserId(userId);
     }
 }
 
