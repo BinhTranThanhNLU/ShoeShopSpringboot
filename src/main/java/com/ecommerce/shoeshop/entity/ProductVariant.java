@@ -30,4 +30,9 @@ public class ProductVariant {
     @JoinColumn(name = "id_product")
     private Product product;
 
+    public void decrementStockQuantity(int quantity) {
+        if(stockQuantity >= quantity) {
+            stockQuantity -= quantity;
+        }
+    }
 }

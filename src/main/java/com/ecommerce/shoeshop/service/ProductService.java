@@ -3,8 +3,11 @@ package com.ecommerce.shoeshop.service;
 import com.ecommerce.shoeshop.dao.ProductRepository;
 import com.ecommerce.shoeshop.dto.ProductDTO;
 import com.ecommerce.shoeshop.entity.Product;
+import com.ecommerce.shoeshop.entity.ProductVariant;
 import com.ecommerce.shoeshop.mapper.ProductMapper;
 import com.ecommerce.shoeshop.responsemodel.ProductPageResponse;
+import com.ecommerce.shoeshop.dao.ProductVariantRepository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +20,13 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private final ProductVariantRepository productVariantRepository;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
-        this.productRepository = productRepository;
+    public ProductService(ProductVariantRepository productVariantRepository, ProductRepository productRepository, ProductMapper productMapper) {
+      this.productVariantRepository = productVariantRepository;
+      this.productRepository = productRepository;
         this.productMapper = productMapper;
     }
 
@@ -74,4 +79,13 @@ public class ProductService {
     }
 
 
+    public ProductVariant getProductVariantEntityById(int variantId) {
+        return productVariantRepository.findById(variantId)
+            .orElseThrow(() -> new RuntimeException("Product variant not found"));
+    }
+
+    public void decreaseStock(int idVariant, int quantity) {
+        ProductVariant productVariant = getProductVariantEntityById(idVariant);
+        productVariant.decrementStockQuantity(quantity);
+    }
 }

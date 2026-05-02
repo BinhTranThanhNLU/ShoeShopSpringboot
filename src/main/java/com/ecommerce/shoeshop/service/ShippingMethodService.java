@@ -2,6 +2,7 @@ package com.ecommerce.shoeshop.service;
 
 import com.ecommerce.shoeshop.dao.ShippingMethodRepository;
 import com.ecommerce.shoeshop.dto.ShippingMethodDTO;
+import com.ecommerce.shoeshop.entity.ShippingMethod;
 import com.ecommerce.shoeshop.mapper.ShippingMethodMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,10 @@ public class ShippingMethodService {
         return shippingMethodRepository.findByIsActiveTrue().stream()
                 .map(shippingMethodMapper::toDto)
                 .toList();
+    }
+
+    public ShippingMethod getMethodById(int id) {
+        return shippingMethodRepository.findById(id).orElse(null);
     }
 }
 

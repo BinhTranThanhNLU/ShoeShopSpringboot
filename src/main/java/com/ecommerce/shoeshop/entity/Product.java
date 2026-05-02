@@ -45,5 +45,21 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> images;
+    public BigDecimal getDiscountedPrice() {
+        if (discountPercent == null || discountPercent <= 0) {
+            return price;
+        }
+        BigDecimal discount = price
+            .multiply(BigDecimal.valueOf(discountPercent))
+            .divide(BigDecimal.valueOf(100));
+        return price.subtract(discount);
+    }
+    public int getTotalQuantity() {
+        int totalAmount = 0;
+        for (ProductVariant variant : variants) {
+            totalAmount+=variant.getStockQuantity();
+        }
+        return totalAmount;
+    }
 
 }
