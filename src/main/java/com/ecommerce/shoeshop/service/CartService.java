@@ -139,6 +139,10 @@ public class CartService {
     }
 
     @Transactional
+    public void clearCartByUserId(Integer userId) {
+        cartRepository.deleteByUserId(userId);
+    }
+    @Transactional
     public CartDTO updateCartItem(int userId, int cartItemId, UpdateCartItemRequest request) {
         CartItem item = cartItemRepository.findByIdAndCart_User_Id(cartItemId, userId)
                 .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + cartItemId));

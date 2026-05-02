@@ -15,17 +15,17 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByCategory_Id(int categoryId, Pageable pageable);
 
     @Query("""
-        SELECT DISTINCT p FROM Product p
-        LEFT JOIN p.variants v
-        WHERE (
-            p.category.id = :categoryId 
-            OR p.category.categoryParent.id = :categoryId
-        )
-        AND (:minPrice IS NULL OR p.price >= :minPrice)
-        AND (:maxPrice IS NULL OR p.price <= :maxPrice)
-        AND (:colors IS NULL OR v.color IN :colors)
-        AND (:brandIds IS NULL OR p.brand.id IN :brandIds)
-    """)
+    SELECT DISTINCT p FROM Product p
+    LEFT JOIN p.variants v
+    WHERE (
+        p.category.id = :categoryId 
+        OR p.category.categoryParent.id = :categoryId
+    )
+    AND (:minPrice IS NULL OR p.price >= :minPrice)
+    AND (:maxPrice IS NULL OR p.price <= :maxPrice)
+    AND (:colors IS NULL OR v.color IN (:colors))  
+    AND (:brandIds IS NULL OR p.brand.id IN (:brandIds)) 
+""")
     Page<Product> findByCategory_IdWithFilters(
             @Param("categoryId") int categoryId,
             @Param("minPrice") BigDecimal minPrice,
