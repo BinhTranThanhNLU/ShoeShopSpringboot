@@ -13,14 +13,26 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
-        config.setAllowCredentials(true); // nếu dùng cookie hoặc Authorization header
+
+        // Cấu hình các Origin cho phép
+        config.setAllowedOrigins(Arrays.asList(
+            "http://localhost:5173",
+            "https://sandbox-down-primarily.ngrok-free.dev"
+        ));
+
+        // Cho phép tất cả các phương thức
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // QUAN TRỌNG: Cho phép tất cả Headers thay vì liệt kê thủ công để tránh sót
+        config.setAllowedHeaders(Arrays.asList("*"));
+
+        // Cho phép gửi kèm Credentials (JWT, Cookies)
+        config.setAllowCredentials(true);
+
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config); // Áp dụng cho tất cả API
         return source;
     }
 }

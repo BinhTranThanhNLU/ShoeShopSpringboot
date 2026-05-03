@@ -9,8 +9,11 @@ import com.ecommerce.shoeshop.mapper.AddressMapper;
 import com.ecommerce.shoeshop.mapper.OrderMapper;
 import com.ecommerce.shoeshop.mapper.PaymentMapper;
 import com.ecommerce.shoeshop.requestmodel.CheckoutRequest;
+import com.ecommerce.shoeshop.utils.VNPayUtils;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,18 @@ public class OrderService {
     private final AddressMapper addressMapper;
     private final PaymentMapper paymentMapper;
 
+    @Value("${vnp.tmncode}")
+    private String tmnCode;
+
+    @Value("${vnp.hashsecret}")
+    private String hashSecret;
+
+    @Value("${vnp.url}")
+    private String apiUrl;
+
+    @Value("${vnp.returnurl}")
+    private String returnUrl;
+
     public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ShippingMethodService shippingMethodService, ProductService productService, CartService cartService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper, PaymentMapper paymentMapper) {
         this.orderRepository = orderRepository;
         this.paymentService = paymentService;
@@ -48,23 +63,23 @@ public class OrderService {
 
     @Transactional
     public OrderDTO createOrder(CheckoutRequest req, Integer authenticatedUserId) {
-        // 0. Xác thực user
+        // 0. Xác thực user[cite: 20]
         User user = authService.findById(authenticatedUserId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 1. Xác thực items
+        // 1. Xác thực items[cite: 20]
         if (req.getItems() == null || req.getItems().isEmpty()) {
             throw new RuntimeException("Cart is empty");
         }
 
-        // 2. Tính tổng ở phía server-side
+        // 2. Tính tổng ở phía server-side (Giá sạch từ DB)[cite: 20]
         BigDecimal computedSubtotal = BigDecimal.ZERO;
         List<OrderItem> orderItems = new ArrayList<>();
+
         for (CheckoutItemDTO item : req.getItems()) {
             ProductVariant variant = productService.getProductVariantEntityById(item.getIdVariant());
             if (variant == null) throw new RuntimeException("Variant not found: " + item.getIdVariant());
 
-            // kiem tra so luong san pham
             if (variant.getStockQuantity() < item.getQuantity()) {
                 throw new RuntimeException("Out of stock for variant " + item.getIdVariant());
             }
@@ -80,21 +95,20 @@ public class OrderService {
             orderItems.add(oi);
         }
 
-        // 3. so sánh giá tiền server và client
-        BigDecimal computedTotal = computedSubtotal
-                .add(req.getShippingFee() != null ? req.getShippingFee() : BigDecimal.ZERO)
-                .subtract(req.getDiscount() != null ? req.getDiscount() : BigDecimal.ZERO);
-
+        // 3. So sánh giá tiền và tính tổng (Không thuế)[cite: 20]
+        BigDecimal shippingFee = (req.getShippingFee() != null) ? req.getShippingFee() : BigDecimal.ZERO;
+        BigDecimal discount = (req.getDiscount() != null) ? req.getDiscount() : BigDecimal.ZERO;
+        BigDecimal computedTotal = computedSubtotal.add(shippingFee).subtract(discount);
 
         if (computedSubtotal.compareTo(req.getSubtotal()) != 0) {
-            throw new RuntimeException("Subtotal mismatch");
+            throw new RuntimeException("Subtotal mismatch! Server: " + computedSubtotal + " Client: " + req.getSubtotal());
         }
 
         if (req.getTotalAmount() != null && computedTotal.compareTo(req.getTotalAmount()) != 0) {
-            throw new RuntimeException("Total amount mismatch");
+            throw new RuntimeException("Total amount mismatch!");
         }
 
-        // 4. Tạo record payment (PENDING)
+        // 4. Tạo record payment (PENDING)[cite: 20]
         PaymentMethod method;
         try {
             method = PaymentMethod.valueOf(req.getPaymentMethod());
@@ -102,13 +116,12 @@ public class OrderService {
             method = PaymentMethod.COD;
         }
         PaymentDTO paymentDTO = paymentService.createPayment(
-                new PaymentDTO(null, method.name(), PaymentStatus.PENDING.name(), null, computedTotal, LocalDateTime.now())
+            new PaymentDTO(null, method.name(), PaymentStatus.PENDING.name(), null, computedTotal, LocalDateTime.now())
         );
         Payment payment = paymentMapper.toEntity(paymentDTO);
 
-        // 5. Xử lý address, tạo mới nếu chưa có
+        // 5. Xử lý địa chỉ[cite: 20]
         Address address = new Address();
-
         address.setFullName(req.getFullName());
         address.setPhone(req.getPhone());
         address.setStreet(req.getStreet());
@@ -116,10 +129,9 @@ public class OrderService {
         address.setDistrict(req.getDistrict());
         address.setProvince(req.getCity());
         address.setUser(user);
-
         address = addressService.createEntity(address);
 
-        // 6. Tạo entity Order
+        // 6. Tạo entity Order[cite: 20]
         Order order = new Order();
         order.setUser(user);
         order.setAddress(address);
@@ -128,29 +140,26 @@ public class OrderService {
         order.setTotalAmount(computedTotal);
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
-
-        // attach items to order and set backref
         order.setItems(orderItems);
         orderItems.forEach(i -> i.setOrder(order));
 
-        //7. shipping-method
-        ShippingMethod shippingMethod = shippingMethodService.getMethodById(req.getShippingMethodId());
+        // 7. Gán phương thức vận chuyển (Mặc định là ID 3)[cite: 20]
+        Integer methodId = (req.getShippingMethodId() != null) ? req.getShippingMethodId() : 3;
+        ShippingMethod shippingMethod = shippingMethodService.getMethodById(methodId);
         order.setShippingMethod(shippingMethod);
 
-        // 8. giảm số lượng stock
+        // 8. Giảm số lượng tồn kho[cite: 20]
         for (OrderItem oi : orderItems) {
             productService.decreaseStock(oi.getVariant().getId(), oi.getQuantity());
         }
 
-        // 9. lưu order
+        // 9. Lưu đơn hàng[cite: 20]
         Order saved = orderRepository.save(order);
-
-        //10. gan id order vao payment
         Payment paymentEntity = saved.getPayment();
         paymentEntity.setOrder(saved);
         paymentService.savePaymentEntity(paymentEntity);
 
-        // 11. sau khi lưu order thành công
+        // 10. Xóa giỏ hàng[cite: 20]
         cartService.clearCartByUserId(user.getId());
 
         return orderMapper.toDto(saved);
@@ -159,7 +168,7 @@ public class OrderService {
     @Transactional
     public OrderDTO updateOrderStatus(int orderId, String status) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+            .orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         order.setUpdatedAt(LocalDateTime.now());
         return orderMapper.toDto(orderRepository.save(order));
@@ -167,7 +176,7 @@ public class OrderService {
 
     public Order findById(int orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+            .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
     @Transactional
@@ -191,12 +200,12 @@ public class OrderService {
         return orderMapper.toDtoList(orders);
     }
 
-    // Trong OrderService.java
     public String createVNPayPaymentUrl(int orderId, String ipAddress) {
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        // Các tham số cơ bản theo tài liệu VNPay
+        String vnp_CreateDate = DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now());
+
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", "2.1.0");
         vnp_Params.put("vnp_Command", "pay");
@@ -209,11 +218,22 @@ public class OrderService {
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", returnUrl);
         vnp_Params.put("vnp_IpAddr", ipAddress);
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 
-        // Thêm thời gian tạo và hết hạn...
-        // Thực hiện sắp xếp tham số và tạo chuỗi Hash (HMACSHA512)
-        String queryUrl = VNPayUtils.buildQueryUrl(vnp_Params, hashSecret);
-        return apiUrl + "?" + queryUrl;
+        // 1. Tạo chuỗi query (đã sắp xếp ABC bên trong Utils)[cite: 11, 14]
+        String queryUrl = VNPayUtils.buildQueryUrl(vnp_Params);
+
+        // 2. Tạo mã băm SecureHash
+        String vnp_SecureHash = VNPayUtils.hmacSHA512(hashSecret, queryUrl);
+
+        // 3. Nối mã băm vào cuối chuỗi truy vấn
+        String finalUrl = apiUrl + "?" + queryUrl + "&vnp_SecureHash=" + vnp_SecureHash;
+
+        System.out.println("======= VNPAY DEBUG INFO =======");
+        System.out.println("vnp_SecureHash: " + vnp_SecureHash);
+        System.out.println("Full Payment URL: " + finalUrl);
+        System.out.println("=================================");
+
+        return finalUrl;
     }
-
 }
