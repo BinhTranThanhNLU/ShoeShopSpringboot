@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
-@RestController
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://sandbox-down-primarily.ngrok-free.dev"
+}, allowCredentials = "true")@RestController
 @RequestMapping("/api/users")
 public class UserController {
 

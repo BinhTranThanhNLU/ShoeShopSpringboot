@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://sandbox-down-primarily.ngrok-free.dev"
+}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

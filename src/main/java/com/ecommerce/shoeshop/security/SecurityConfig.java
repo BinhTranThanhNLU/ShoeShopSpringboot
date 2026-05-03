@@ -40,6 +40,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/shipping-methods/**").permitAll()
                         .requestMatchers("/api/orders/**").permitAll()
                         .requestMatchers("/api/vpn/return").permitAll()
+                        .requestMatchers("/api/vnpay-callback/**").permitAll()
+                        .requestMatchers("/checkout/payment-callback/**").permitAll()
+                        .requestMatchers("/api/orders/payment-callback/**").permitAll() // Thêm /api/orders/ vào trước
+                        .requestMatchers("/api/payment/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/upload/**").permitAll()
@@ -70,4 +74,3 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
-

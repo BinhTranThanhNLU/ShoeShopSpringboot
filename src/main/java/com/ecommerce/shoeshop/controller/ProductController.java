@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
-@RestController
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://sandbox-down-primarily.ngrok-free.dev"
+}, allowCredentials = "true")@RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
