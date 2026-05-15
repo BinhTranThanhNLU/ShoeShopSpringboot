@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,9 +78,32 @@ public class OrderController {
 
     @GetMapping("/my")
     public ResponseEntity<List<OrderDTO>> getMyOrders(@AuthenticationPrincipal AppUserDetails appUserDetails) {
+        if (appUserDetails == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
         User user = appUserDetails.getUser();
         List<OrderDTO> orders = orderService.getOrdersByUserId(user.getId());
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<OrderDTO>> getMyOrdersAlias(@AuthenticationPrincipal AppUserDetails appUserDetails) {
+        return getMyOrders(appUserDetails);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getOrderDetail(@PathVariable int id,
+                                                   @AuthenticationPrincipal AppUserDetails appUserDetails) {
+        if (appUserDetails == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+
+        boolean isAdmin = appUserDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .anyMatch("ADMIN"::equals);
+
+        OrderDTO order = orderService.getOrderByIdForUser(id, appUserDetails.getUser().getId(), isAdmin);
+        return ResponseEntity.ok(order);
     }
 
 }

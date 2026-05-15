@@ -200,6 +200,15 @@ public class OrderService {
         return orderMapper.toDtoList(orders);
     }
 
+    public OrderDTO getOrderByIdForUser(int orderId, int userId, boolean isAdmin) {
+        Order order = isAdmin
+            ? orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"))
+            : orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new RuntimeException("Order not found or access denied"));
+
+        return orderMapper.toDto(order);
+    }
+
     public String createVNPayPaymentUrl(int orderId, String ipAddress) {
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found"));

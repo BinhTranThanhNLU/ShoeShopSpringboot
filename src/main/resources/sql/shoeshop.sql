@@ -5,13 +5,13 @@
  Source Server Type    : MariaDB
  Source Server Version : 100432 (10.4.32-MariaDB)
  Source Host           : localhost:3306
- Source Schema         : shoe
+ Source Schema         : shoeshop
 
  Target Server Type    : MariaDB
  Target Server Version : 100432 (10.4.32-MariaDB)
  File Encoding         : 65001
 
- Date: 05/03/2026 16:47:02
+ Date: 15/05/2026 20:56:47
 */
 
 SET NAMES utf8mb4;
@@ -36,7 +36,7 @@ CREATE TABLE `address`  (
   PRIMARY KEY (`id_address`) USING BTREE,
   INDEX `id_user`(`id_user`) USING BTREE,
   CONSTRAINT `address_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of address
@@ -49,6 +49,8 @@ INSERT INTO `address` VALUES (5, 'Tran Thanh Binh', '0987654321', '123 Le Loi', 
 INSERT INTO `address` VALUES (6, 'Tran Thanh Binh', '0987654321', '123 Le Loi', 'Ward 1', 'District 2', 'Bình Dương', 0, 2, '2025-09-28 08:28:44', '2025-09-28 16:03:37');
 INSERT INTO `address` VALUES (7, 'Tran Thanh Binh', '0987654321', '234 le loi', 'Ward 2', 'District 2', 'Bình Dương', 0, 2, '2025-09-28 08:36:37', '2025-09-28 16:03:22');
 INSERT INTO `address` VALUES (8, 'Trần Thanh Bình', '0987654321', '123/B', 'Ward 1', 'District 1', 'Bình Dương', 0, 2, '2025-09-28 09:55:08', '2025-09-28 09:55:08');
+INSERT INTO `address` VALUES (9, 'Thanh Bình Trần', '0347318239', 'Thị xã Dĩ An', 'Ward 1', 'District 2', 'Bình Dương', 0, 4, '2026-05-14 06:20:51', '2026-05-14 06:20:51');
+INSERT INTO `address` VALUES (10, 'Thanh Bình Trần', '0347318239', 'Thị xã Dĩ An', 'Tân Đông Hiệp', 'Dĩ An', 'Bình Dương', 0, 4, '2026-05-15 13:50:43', '2026-05-15 13:50:43');
 
 -- ----------------------------
 -- Table structure for brands
@@ -89,7 +91,7 @@ CREATE TABLE `cart`  (
   INDEX `fk_cart_shipping_method`(`id_shipping_method`) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `fk_cart_shipping_method` FOREIGN KEY (`id_shipping_method`) REFERENCES `shipping_methods` (`id_shipping_method`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cart
@@ -98,6 +100,7 @@ INSERT INTO `cart` VALUES (1, NULL, '2025-09-09 13:44:22', '2025-09-09 13:44:22'
 INSERT INTO `cart` VALUES (2, 1, '2025-09-09 14:00:32', '2025-09-09 14:00:32', NULL);
 INSERT INTO `cart` VALUES (9, 2, '2025-09-28 16:55:46', '2025-09-28 16:55:46', NULL);
 INSERT INTO `cart` VALUES (10, 8, '2025-10-10 21:43:19', '2025-10-10 21:43:19', NULL);
+INSERT INTO `cart` VALUES (11, 7, '2026-04-19 15:19:50', '2026-04-20 09:02:44', 3);
 
 -- ----------------------------
 -- Table structure for cart_item
@@ -114,11 +117,13 @@ CREATE TABLE `cart_item`  (
   INDEX `fk_cart_item_variant`(`id_variant`) USING BTREE,
   CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`id_cart`) REFERENCES `cart` (`id_cart`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `fk_cart_item_variant` FOREIGN KEY (`id_variant`) REFERENCES `product_variants` (`id_variant`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cart_item
 -- ----------------------------
+INSERT INTO `cart_item` VALUES (39, 2, 850000.00, 11, 511);
+INSERT INTO `cart_item` VALUES (40, 3, 2175200.00, 11, 146);
 
 -- ----------------------------
 -- Table structure for category
@@ -161,7 +166,7 @@ CREATE TABLE `order_item`  (
   INDEX `fk_orderitem_variant`(`id_variant`) USING BTREE,
   CONSTRAINT `fk_orderitem_variant` FOREIGN KEY (`id_variant`) REFERENCES `product_variants` (`id_variant`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order_item
@@ -176,6 +181,8 @@ INSERT INTO `order_item` VALUES (7, 1, 2022300.00, 5, 71);
 INSERT INTO `order_item` VALUES (8, 1, 1903300.00, 6, 56);
 INSERT INTO `order_item` VALUES (9, 1, 2022300.00, 7, 26);
 INSERT INTO `order_item` VALUES (10, 1, 2022300.00, 8, 16);
+INSERT INTO `order_item` VALUES (11, 2, 1805300.00, 9, 341);
+INSERT INTO `order_item` VALUES (12, 1, 850000.00, 10, 511);
 
 -- ----------------------------
 -- Table structure for orders
@@ -200,7 +207,7 @@ CREATE TABLE `orders`  (
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`id_address`) REFERENCES `address` (`id_address`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`id_payment`) REFERENCES `payment` (`id_payment`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of orders
@@ -213,6 +220,8 @@ INSERT INTO `orders` VALUES (5, 2022300.00, 'PENDING', 2, 5, '2025-09-22 08:08:3
 INSERT INTO `orders` VALUES (6, 2003300.00, 'CANCELLED', 2, 6, '2025-09-28 08:28:44', '2025-09-28 16:58:48', 6, NULL);
 INSERT INTO `orders` VALUES (7, 2122300.00, 'DELIVERED', 2, 7, '2025-09-28 08:36:37', '2025-09-28 16:58:37', 7, 1);
 INSERT INTO `orders` VALUES (8, 2122300.00, 'PENDING', 2, 8, '2025-09-28 09:55:08', '2025-09-28 09:55:08', 8, 1);
+INSERT INTO `orders` VALUES (9, 3610600.00, 'CONFIRMED', 4, 9, '2026-05-14 06:20:51', '2026-05-14 06:20:51', 9, 3);
+INSERT INTO `orders` VALUES (10, 850000.00, 'CONFIRMED', 4, 10, '2026-05-15 13:50:43', '2026-05-15 13:50:43', 10, 3);
 
 -- ----------------------------
 -- Table structure for password_reset_tokens
@@ -250,7 +259,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`id_payment`) USING BTREE,
   INDEX `id_order`(`id_order`) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of payment
@@ -263,6 +272,8 @@ INSERT INTO `payment` VALUES (5, 'VNPAY', 'PENDING', NULL, 2022300.00, '2025-09-
 INSERT INTO `payment` VALUES (6, 'COD', 'PENDING', NULL, 2003300.00, '2025-09-28 08:28:43', 6);
 INSERT INTO `payment` VALUES (7, 'COD', 'PENDING', NULL, 2122300.00, '2025-09-28 08:36:37', 7);
 INSERT INTO `payment` VALUES (8, 'COD', 'PENDING', NULL, 2122300.00, '2025-09-28 09:55:08', 8);
+INSERT INTO `payment` VALUES (9, 'VNPAY', 'SUCCESS', NULL, 3610600.00, '2026-05-14 06:20:51', 9);
+INSERT INTO `payment` VALUES (10, 'VNPAY', 'SUCCESS', NULL, 850000.00, '2026-05-15 13:50:43', 10);
 
 -- ----------------------------
 -- Table structure for product_images
@@ -900,7 +911,7 @@ INSERT INTO `product_variants` VALUES (337, 'Đen', 'US 8.5', 20, 56);
 INSERT INTO `product_variants` VALUES (338, 'Đen', 'US 9', 20, 56);
 INSERT INTO `product_variants` VALUES (339, 'Đen', 'US 9.5', 20, 56);
 INSERT INTO `product_variants` VALUES (340, 'Đen', 'US 10', 20, 56);
-INSERT INTO `product_variants` VALUES (341, 'Đen', 'US 8', 20, 57);
+INSERT INTO `product_variants` VALUES (341, 'Đen', 'US 8', 18, 57);
 INSERT INTO `product_variants` VALUES (342, 'Đen', 'US 8.5', 20, 57);
 INSERT INTO `product_variants` VALUES (343, 'Đen', 'US 9', 20, 57);
 INSERT INTO `product_variants` VALUES (344, 'Đen', 'US 9.5', 20, 57);
@@ -1070,7 +1081,7 @@ INSERT INTO `product_variants` VALUES (507, 'Trắng', 'US 8.5', 20, 90);
 INSERT INTO `product_variants` VALUES (508, 'Trắng', 'US 9', 20, 90);
 INSERT INTO `product_variants` VALUES (509, 'Trắng', 'US 9.5', 20, 90);
 INSERT INTO `product_variants` VALUES (510, 'Trắng', 'US 10', 20, 90);
-INSERT INTO `product_variants` VALUES (511, 'Trắng', 'US10', 20, 91);
+INSERT INTO `product_variants` VALUES (511, 'Trắng', 'US10', 19, 91);
 
 -- ----------------------------
 -- Table structure for products
@@ -1257,18 +1268,22 @@ DROP TABLE IF EXISTS `shipping_methods`;
 CREATE TABLE `shipping_methods`  (
   `id_shipping_method` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `cost` decimal(10, 2) NOT NULL,
+  `estimated_days` int(11) NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `min_order_amount` decimal(10, 2) NULL DEFAULT NULL,
   PRIMARY KEY (`id_shipping_method`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shipping_methods
 -- ----------------------------
-INSERT INTO `shipping_methods` VALUES (1, 'Giao hàng tiêu chuẩn', 100000.00, 3000000.00);
-INSERT INTO `shipping_methods` VALUES (2, 'Giao hàng nhanh', 200000.00, NULL);
-INSERT INTO `shipping_methods` VALUES (3, 'Miễn phí vận chuyển', 0.00, 1000000.00);
+INSERT INTO `shipping_methods` VALUES (1, 'Giao hàng tiêu chuẩn', NULL, 100000.00, NULL, 1, 3000000.00);
+INSERT INTO `shipping_methods` VALUES (2, 'Giao hàng nhanh', NULL, 200000.00, NULL, 1, NULL);
+INSERT INTO `shipping_methods` VALUES (3, 'Miễn phí vận chuyển', NULL, 0.00, NULL, 1, 1000000.00);
+INSERT INTO `shipping_methods` VALUES (4, 'Giao hàng siêu tốc', 'Giao cùng ngày (chỉ trong nội thành)', 500000.00, 0, 1, NULL);
 
 -- ----------------------------
 -- Table structure for users
