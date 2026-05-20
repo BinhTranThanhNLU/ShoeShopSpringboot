@@ -16,14 +16,16 @@ public class ProductDTO {
 
     private int id;
     private String name;
+    private String brand;
     private BigDecimal price;
+    private String category;
     private Integer discountPercent;
     private BigDecimal discountedPrice;
     private String description;
     private int totalQuantity;
-    private String brand;
-    private String category;
-    private List<ProductImageDTO> images;
+    private List<ProductImageDTO> image;
     private List<ProductVariantDTO> variants;
+    private int stock;
+    private boolean status;
 
 }
