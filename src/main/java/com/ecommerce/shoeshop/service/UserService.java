@@ -2,15 +2,21 @@ package com.ecommerce.shoeshop.service;
 
 
 import com.ecommerce.shoeshop.dao.UserRepository;
+import com.ecommerce.shoeshop.dto.RoleDTO;
 import com.ecommerce.shoeshop.dto.UserDTO;
 import com.ecommerce.shoeshop.entity.User;
 import com.ecommerce.shoeshop.mapper.UserMapper;
 import com.ecommerce.shoeshop.requestmodel.UpdateUserRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -74,6 +80,54 @@ public class UserService {
         userRepository.save(existingUser);
 
         return ResponseEntity.noContent().build();
+    }
+    // 1. Phân trang + Tìm kiếm tổng hợp cho Admin
+    public Page<UserDTO> getAllUsersForAdmin(String keyword, Boolean status, Integer roleId, int page, int size) {
+        // Sắp xếp mặc định theo ID giảm dần (tài khoản mới tạo lên đầu)
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<User> userPage = userRepository.findAllUsersWithFilters(keyword, status, roleId, pageable);
+
+        // Thực hiện chuyển map thủ công sang DTO tránh phụ thuộc thư viện ngoại vi
+        return userPage.map(user -> {
+            RoleDTO roleDTO = null;
+            if (user.getRole() != null) {
+                roleDTO = new RoleDTO(user.getRole().getId(), user.getRole().getName());
+            }
+            return new UserDTO(
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.isStatus(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
+                roleDTO
+            );
+        });
+    }
+
+    // 2. Lấy chi tiết thông tin 1 User
+    public UserDTO getUserDetailById(int id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng có ID: " + id));
+
+        RoleDTO roleDTO = null;
+        if (user.getRole() != null) {
+            roleDTO = new RoleDTO(user.getRole().getId(), user.getRole().getName());
+        }
+        return new UserDTO(user.getId(), user.getFullName(), user.getEmail(), user.getPhone(), user.isStatus(), user.getCreatedAt(), user.getUpdatedAt(), roleDTO);
+    }
+
+    // 3. Xử lý mở/khóa tài khoản dựa trên cơ chế hoán đổi trạng thái bit (0/1)
+    @Transactional
+    public boolean toggleUserStatus(int id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng tài khoản ID: " + id));
+
+        // Đảo trạng thái logic trực tiếp trên trường thuộc tính status
+        user.setStatus(!user.isStatus());
+        userRepository.save(user);
+        return user.isStatus();
     }
 
 
