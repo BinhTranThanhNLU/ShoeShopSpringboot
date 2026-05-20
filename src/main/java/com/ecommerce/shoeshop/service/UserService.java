@@ -83,11 +83,9 @@ public class UserService {
     }
     // 1. Phân trang + Tìm kiếm tổng hợp cho Admin
     public Page<UserDTO> getAllUsersForAdmin(String keyword, Boolean status, Integer roleId, int page, int size) {
-        // Sắp xếp mặc định theo ID giảm dần (tài khoản mới tạo lên đầu)
+        // Sắp xếp người dùng mới tạo/mới cập nhật lên trên đầu
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<User> userPage = userRepository.findAllUsersWithFilters(keyword, status, roleId, pageable);
-
-        // Thực hiện chuyển map thủ công sang DTO tránh phụ thuộc thư viện ngoại vi
         return userPage.map(user -> {
             RoleDTO roleDTO = null;
             if (user.getRole() != null) {
