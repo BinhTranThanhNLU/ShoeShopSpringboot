@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductVariantDTO {
 
-    private int id;
+    private Integer id;
     private String color;
     private String size;
-    private int stockQuantity;
+    private Integer stockQuantity;
 
 }

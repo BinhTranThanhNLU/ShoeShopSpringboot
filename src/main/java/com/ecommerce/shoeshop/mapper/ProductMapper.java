@@ -18,6 +18,9 @@ public interface ProductMapper {
     @Mapping(source = "brand.name", target = "brand")
     @Mapping(source = "category.name", target = "category")
     @Mapping(target = "discountedPrice", expression = "java(calculateDiscountedPrice(product))")
+    @Mapping(source = "images", target = "image")
+
+    @Mapping(target = "status", constant = "true")
     ProductDTO toDto(Product product);
 
     ProductImageDTO toImageDTO(ProductImage productImage);
@@ -35,10 +38,9 @@ public interface ProductMapper {
         }
 
         BigDecimal discount = price
-                .multiply(BigDecimal.valueOf(discountPercent))
-                .movePointLeft(2);
+            .multiply(BigDecimal.valueOf(discountPercent))
+            .movePointLeft(2);
 
         return price.subtract(discount);
     }
-
 }

@@ -27,15 +27,21 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     AND (:brandIds IS NULL OR p.brand.id IN (:brandIds)) 
 """)
     Page<Product> findByCategory_IdWithFilters(
-            @Param("categoryId") int categoryId,
-            @Param("minPrice") BigDecimal minPrice,
-            @Param("maxPrice") BigDecimal maxPrice,
-            @Param("brandIds") List<Integer> brandIds,
-            @Param("colors") List<String> colors,
-            Pageable pageable
-    );
-
-
-
-
+        @Param("categoryId") int categoryId,
+        @Param("minPrice") BigDecimal minPrice,
+        @Param("maxPrice") BigDecimal maxPrice,
+        @Param("brandIds") List<Integer> brandIds,
+        @Param("colors") List<String> colors,
+        Pageable pageable);
+    @Query("""
+    SELECT p FROM Product p 
+    WHERE (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+      AND (:brand IS NULL OR LOWER(p.brand.name) = LOWER(:brand))
+      AND (:category IS NULL OR LOWER(p.category.name) = LOWER(:category))
+    """)
+    Page<Product> findAllProductsForAdmin(
+        @Param("keyword") String keyword,
+        @Param("brand") String brand,
+        @Param("category") String category,
+        Pageable pageable);
 }
