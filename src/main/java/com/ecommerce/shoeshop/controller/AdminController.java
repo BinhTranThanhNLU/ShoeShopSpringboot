@@ -1,22 +1,20 @@
 package com.ecommerce.shoeshop.controller;
 
+import com.ecommerce.shoeshop.dto.CategoryDTO;
 import com.ecommerce.shoeshop.dto.OrderDTO;
 import com.ecommerce.shoeshop.dto.UserDTO;
+import com.ecommerce.shoeshop.requestmodel.AddCategoryRequest;
+import com.ecommerce.shoeshop.requestmodel.UpdateCategoryRequest;
 import com.ecommerce.shoeshop.requestmodel.UpdateOrderStatusRequest;
+import com.ecommerce.shoeshop.service.CategoryService;
 import com.ecommerce.shoeshop.service.OrderService;
 import com.ecommerce.shoeshop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = {
@@ -29,11 +27,45 @@ public class AdminController {
 
   private final UserService userService;
   private final OrderService orderService;
+  private final CategoryService categoryService;
 
-  public AdminController(UserService userService, OrderService orderService) {
+  public AdminController(UserService userService, OrderService orderService, CategoryService categoryService) {
     this.userService = userService;
     this.orderService = orderService;
+    this.categoryService = categoryService;
   }
+
+  // -------------------- Quản lý Category -------------------------------------
+
+  @GetMapping("/categories")
+  public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+    return ResponseEntity.ok(categoryService.findAll());
+  }
+
+  @GetMapping("/categories/{id}")
+  public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable int id) {
+    return ResponseEntity.ok(categoryService.getById(id));
+  }
+
+  @PostMapping("/categories")
+  public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody AddCategoryRequest req) {
+    CategoryDTO dto = categoryService.createCategory(req.getName(), req.getDescription(), req.getParentId());
+    return ResponseEntity.ok(dto);
+  }
+
+  @PatchMapping("/categories/{id}")
+  public ResponseEntity<CategoryDTO> updateCategory(@PathVariable int id, @Valid @RequestBody UpdateCategoryRequest req) {
+    CategoryDTO dto = categoryService.updateCategory(id, req.getName(), req.getDescription(), req.getParentId());
+    return ResponseEntity.ok(dto);
+  }
+
+  @DeleteMapping("/categories/{id}")
+  public ResponseEntity<?> deleteCategory(@PathVariable int id) {
+    categoryService.deleteCategory(id);
+    return ResponseEntity.ok(Map.of("message", "Xóa danh mục thành công"));
+  }
+
+  // -------------------- Quản lý User -------------------------------------
 
   // Lấy danh sách kèm theo các bộ lọc đầu vào
   @GetMapping("/users")
@@ -62,6 +94,8 @@ public class AdminController {
     String msg = active ? "Mở khóa tài khoản thành công!" : "Khóa tài khoản người dùng thành công!";
     return ResponseEntity.ok(Map.of("message", msg, "status", active));
   }
+
+  // -------------------- Quản lý Order -------------------------------------
 
   @GetMapping("/orders")
   public ResponseEntity<Page<OrderDTO>> getAllOrders(

@@ -1,0 +1,39 @@
+package com.ecommerce.shoeshop.requestmodel;
+
+import jakarta.validation.constraints.NotBlank;
+
+public class AddCategoryRequest {
+
+    @NotBlank(message = "Tên danh mục không được để trống")
+    private String name;
+
+    private String description;
+
+    // optional parent id
+    private Integer parentId;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+}
+
