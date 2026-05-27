@@ -2,6 +2,8 @@ package com.ecommerce.shoeshop.dao;
 
 import com.ecommerce.shoeshop.entity.Order;
 import com.ecommerce.shoeshop.entity.Product;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,5 +38,40 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
         @Param("status") String status,
         @Param("paymentStatus") String paymentStatus,
         Pageable pageable);
+
+    @Query("SELECT SUM(o.totalAmount) FROM Order o WHERE UPPER(o.status) <> 'CANCELLED'")
+    BigDecimal sumTotalRevenue();
+
+    @Query("SELECT SUM(o.totalAmount) FROM Order o WHERE UPPER(o.status) <> 'CANCELLED' AND o.createdAt BETWEEN :start AND :end")
+    BigDecimal sumRevenueBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT o.status, COUNT(o) FROM Order o GROUP BY o.status")
+    List<Object[]> countOrdersByStatus();
+
+    @Query(value = """
+        SELECT p.id_product, p.name, b.name, SUM(oi.quantity), SUM(oi.price)
+        FROM order_item oi
+        JOIN orders o ON oi.id_order = o.id_order
+        JOIN product_variants pv ON oi.id_variant = pv.id_variant
+        JOIN products p ON pv.id_product = p.id_product
+        LEFT JOIN brands b ON p.id_brand = b.id_brand
+        WHERE UPPER(o.status) <> 'CANCELLED'
+          AND (:year IS NULL OR YEAR(o.created_at) = :year)
+        GROUP BY p.id_product, p.name, b.name
+        ORDER BY SUM(oi.quantity) DESC, SUM(oi.price) DESC
+        """, nativeQuery = true)
+    List<Object[]> findTopSellingProducts(@Param("year") Integer year);
+
+    @Query(value = """
+        SELECT MONTH(o.created_at), COALESCE(SUM(o.total_amount), 0)
+        FROM orders o
+        WHERE UPPER(o.status) <> 'CANCELLED'
+          AND YEAR(o.created_at) = :year
+        GROUP BY MONTH(o.created_at)
+        ORDER BY MONTH(o.created_at)
+        """, nativeQuery = true)
+    List<Object[]> findMonthlyRevenue(@Param("year") int year);
 
 }

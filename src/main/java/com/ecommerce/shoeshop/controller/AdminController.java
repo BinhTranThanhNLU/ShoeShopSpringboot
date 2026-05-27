@@ -6,6 +6,12 @@ import com.ecommerce.shoeshop.dto.UserDTO;
 import com.ecommerce.shoeshop.requestmodel.AddCategoryRequest;
 import com.ecommerce.shoeshop.requestmodel.UpdateCategoryRequest;
 import com.ecommerce.shoeshop.requestmodel.UpdateOrderStatusRequest;
+import com.ecommerce.shoeshop.responsemodel.DashboardOverviewDTO;
+import com.ecommerce.shoeshop.responsemodel.DashboardOrderStatusDTO;
+import com.ecommerce.shoeshop.responsemodel.DashboardRevenueDTO;
+import com.ecommerce.shoeshop.responsemodel.DashboardSummaryDTO;
+import com.ecommerce.shoeshop.responsemodel.DashboardTopProductDTO;
+import com.ecommerce.shoeshop.service.AdminDashboardService;
 import com.ecommerce.shoeshop.service.CategoryService;
 import com.ecommerce.shoeshop.service.OrderService;
 import com.ecommerce.shoeshop.service.UserService;
@@ -28,11 +34,46 @@ public class AdminController {
   private final UserService userService;
   private final OrderService orderService;
   private final CategoryService categoryService;
+  private final AdminDashboardService adminDashboardService;
 
-  public AdminController(UserService userService, OrderService orderService, CategoryService categoryService) {
+  public AdminController(UserService userService, OrderService orderService, CategoryService categoryService, AdminDashboardService adminDashboardService) {
     this.userService = userService;
     this.orderService = orderService;
     this.categoryService = categoryService;
+    this.adminDashboardService = adminDashboardService;
+  }
+
+  // -------------------- Dashboard & Thống kê -------------------------------------
+
+  @GetMapping("/dashboard")
+  public ResponseEntity<DashboardOverviewDTO> getDashboardOverview(
+      @RequestParam(required = false) Integer year,
+      @RequestParam(defaultValue = "5") int topLimit) {
+    return ResponseEntity.ok(adminDashboardService.getOverview(year, topLimit));
+  }
+
+  @GetMapping("/dashboard/summary")
+  public ResponseEntity<DashboardSummaryDTO> getDashboardSummary() {
+    return ResponseEntity.ok(adminDashboardService.getSummary());
+  }
+
+  @GetMapping("/dashboard/revenue")
+  public ResponseEntity<List<DashboardRevenueDTO>> getDashboardRevenueByMonth(
+      @RequestParam(required = false) Integer year) {
+    int targetYear = year != null ? year : java.time.LocalDate.now().getYear();
+    return ResponseEntity.ok(adminDashboardService.getRevenueByMonth(targetYear));
+  }
+
+  @GetMapping("/dashboard/top-products")
+  public ResponseEntity<List<DashboardTopProductDTO>> getDashboardTopProducts(
+      @RequestParam(required = false) Integer year,
+      @RequestParam(defaultValue = "5") int limit) {
+    return ResponseEntity.ok(adminDashboardService.getTopProducts(year, limit));
+  }
+
+  @GetMapping("/dashboard/order-status-counts")
+  public ResponseEntity<List<DashboardOrderStatusDTO>> getDashboardOrderStatusCounts() {
+    return ResponseEntity.ok(adminDashboardService.getOrderStatusCounts());
   }
 
   // -------------------- Quản lý Category -------------------------------------

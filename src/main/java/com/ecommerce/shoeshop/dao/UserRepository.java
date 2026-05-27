@@ -2,6 +2,7 @@ package com.ecommerce.shoeshop.dao;
 
 
 import com.ecommerce.shoeshop.entity.User;
+import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +26,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         @Param("status") Boolean status,
         @Param("roleId") Integer roleId,
         Pageable pageable);
+
+    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
 
