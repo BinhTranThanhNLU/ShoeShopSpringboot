@@ -8,7 +8,7 @@ import com.ecommerce.shoeshop.dto.UserDTO;
 import com.ecommerce.shoeshop.entity.PasswordResetToken;
 import com.ecommerce.shoeshop.entity.Role;
 import com.ecommerce.shoeshop.entity.User;
-import com.ecommerce.shoeshop.mapper.RoleMapper;
+import com.ecommerce.shoeshop.exception.InvalidCredentialsException;
 import com.ecommerce.shoeshop.mapper.UserMapper;
 import com.ecommerce.shoeshop.requestmodel.RegisterRequest;
 import com.ecommerce.shoeshop.security.JwtService;
@@ -29,27 +29,25 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserMapper userMapper;
-    private final RoleMapper roleMapper;
     private final EmailService emailService;
 
     public AuthService(UserRepository userRepository, RoleRepository roleRepository, PasswordResetTokenRepository tokenRepository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
-                       UserMapper userMapper, RoleMapper roleMapper, EmailService emailService) {
+                       UserMapper userMapper, EmailService emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.userMapper = userMapper;
-        this.roleMapper = roleMapper;
         this.emailService = emailService;
     }
 
     // Đăng ký
     public UserDTO register(RegisterRequest req) {
         if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("Email đã tồn tại !");
         }
 
         User user = new User();
@@ -60,7 +58,7 @@ public class AuthService {
 
         // Gán role mặc định là USER
         Role defaultRole = roleRepository.findByName("USER")
-                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+                .orElseThrow(() -> new RuntimeException("Role USER không tồn tại !"));
         user.setRole(defaultRole);
 
         User saved = userRepository.save(user);
@@ -71,11 +69,11 @@ public class AuthService {
     public String login(String email, String rawPassword) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            throw new RuntimeException("User not found");
+            throw new InvalidCredentialsException("Sai tài khoản hoặc mật khẩu!");
         }
         User user = userOpt.get();
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsException("Sai tài khoản hoặc mật khẩu!");
         }
         return jwtService.generateToken(user.getEmail());
     }
@@ -84,7 +82,7 @@ public class AuthService {
     public UserDTO getUserFromToken(String token) {
         String email = jwtService.extractSubject(token);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User không tồn tại !"));
         return userMapper.toDto(user);
     }
 
@@ -92,7 +90,7 @@ public class AuthService {
     @Transactional
     public void forgotPassword(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Email not found"));
+                .orElseThrow(() -> new RuntimeException("Email không tồn tại !"));
 
         // Xóa token cũ  để tránh spam
         tokenRepository.deleteByUser(user);
@@ -109,7 +107,7 @@ public class AuthService {
         tokenRepository.save(token);
 
         //gui email
-        String resetLink = "http://localhost:3000/reset-password?token=" + resetToken;
+        String resetLink = "http://localhost:5173/reset-password?token=" + resetToken;
         emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
     }
 
@@ -117,10 +115,10 @@ public class AuthService {
     @Transactional
     public void resetPassword(String tokenStr, String newPassword) {
         PasswordResetToken token = tokenRepository.findByToken(tokenStr)
-                .orElseThrow(() -> new RuntimeException("Invalid token"));
+                .orElseThrow(() -> new RuntimeException("Token không hợp lệ !"));
 
         if (token.getExpiry().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Token expired");
+            throw new RuntimeException("Token đã hết hạn !");
         }
 
         User user = token.getUser();

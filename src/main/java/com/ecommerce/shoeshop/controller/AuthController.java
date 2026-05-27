@@ -15,8 +15,6 @@ import jakarta.validation.Valid;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -41,6 +39,16 @@ public class AuthController {
       this.userRepository = userRepository;
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        authService.forgotPassword(email);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Yêu cầu khôi phục mật khẩu đã được gửi đến email của bạn.");
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterRequest req) {
         UserDTO user = authService.register(req);
@@ -49,39 +57,23 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
-        System.out.println(">>> Nhận yêu cầu đăng nhập từ Email: " + req.getEmail());
 
-        try {
-            // 1. CHỦ ĐỘNG KIỂM TRA TRẠNG THÁI TÀI KHOẢN TRƯỚC KHI ĐĂNG NHẬP
-            Optional<User> userOpt = userRepository.findByEmail(req.getEmail());
-            if (userOpt.isPresent()) {
-                User userEntity = userOpt.get();
-                System.out.println(">>>  Trạng thái tài khoản trong DB (status): " + userEntity.isStatus());
+        // Kiểm tra trạng thái tài khoản trước, nếu bị khóa thì trả 403
+        Optional<User> userOpt = userRepository.findByEmail(req.getEmail());
+        if (userOpt.isPresent()) {
+            User userEntity = userOpt.get();
 
-                if (!userEntity.isStatus()) {
-                    System.out.println(">>>  PHÁT HIỆN TÀI KHOẢN BỊ KHÓA: " + req.getEmail());
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(Map.of("message", "Tài khoản của bạn đã bị khóa bởi Quản trị viên!"));
-                }
+            if (!userEntity.isStatus()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Tài khoản của bạn đã bị khóa bởi Quản trị viên!"));
             }
-
-            // 2. Nếu trạng thái hoạt động bình thường (status == true), tiến hành đăng nhập sinh token
-            String token = authService.login(req.getEmail(), req.getPassword());
-            System.out.println(">>> [LOG BACKEND 2] Tạo Token thành công cho: " + req.getEmail());
-
-            UserDTO user = authService.getUserFromToken(token);
-            return ResponseEntity.ok(new LoginResponse(token, user));
-
-        } catch (BadCredentialsException e) {
-            System.out.println(">>> [LOG BACKEND 4] Sai tài khoản hoặc mật khẩu.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("message", "Sai tài khoản hoặc mật khẩu, vui lòng kiểm tra lại!"));
-
-        } catch (Exception e) {
-            System.out.println(">>> [LOG BACKEND EXCEPTION] Lỗi hệ thống: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("message", "Đăng nhập thất bại do lỗi hệ thống!"));
         }
+
+        // Sai email hoặc mật khẩu sẽ được ném InvalidCredentialsException để GlobalExceptionHandler trả 401
+        String token = authService.login(req.getEmail(), req.getPassword());
+
+        UserDTO user = authService.getUserFromToken(token);
+        return ResponseEntity.ok(new LoginResponse(token, user));
     }
 
     @GetMapping("/me")
@@ -99,7 +91,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> resetPassword(@RequestBody ResetPasswordRequest req) {
         authService.resetPassword(req.getToken(), req.getNewPassword());
         Map<String, String> res = new HashMap<>();
-        res.put("message", "Password reset successfully");
+        res.put("message", "Mật khẩu đã được cập nhật thành công!");
         return ResponseEntity.ok(res);
     }
 
