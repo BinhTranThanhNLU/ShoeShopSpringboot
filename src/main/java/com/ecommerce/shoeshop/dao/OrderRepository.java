@@ -2,6 +2,8 @@ package com.ecommerce.shoeshop.dao;
 
 import com.ecommerce.shoeshop.entity.Order;
 import com.ecommerce.shoeshop.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +23,18 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query("SELECT DISTINCT v.product FROM Order o JOIN o.items i JOIN i.variant v WHERE o.user.id = :userId AND o.status IN ('CONFIRMED', 'SHIPPED', 'DELIVERED')")
     List<Product> findPurchasedProductsByUserId(@Param("userId") int userId);
+
+    @Query("SELECT o FROM Order o WHERE " +
+        "(:keyword IS NULL OR " +
+        "LOWER(o.user.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+        "LOWER(o.user.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+        "CAST(o.id AS string) LIKE CONCAT('%', :keyword, '%')) " +
+        "AND (:status IS NULL OR UPPER(o.status) = UPPER(:status)) " +
+        "AND (:paymentStatus IS NULL OR UPPER(CAST(o.payment.status AS string)) = UPPER(:paymentStatus))")
+    Page<Order> findAllOrdersWithFilters(
+        @Param("keyword") String keyword,
+        @Param("status") String status,
+        @Param("paymentStatus") String paymentStatus,
+        Pageable pageable);
 
 }

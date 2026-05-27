@@ -1,5 +1,6 @@
 package com.ecommerce.shoeshop.security;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,13 +47,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/addresses/**").authenticated()
                         .requestMatchers("/api/reviews/product/**").permitAll()
                         .requestMatchers("/api/reviews/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/orders/*/status").hasAuthority("ADMIN")
                         .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/admin/products/**").permitAll()
                         .requestMatchers("/api/upload/**").permitAll()
                         .requestMatchers("/api/login", "/api/register", "/uploads/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(daoAuthenticationProvider())

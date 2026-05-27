@@ -12,8 +12,14 @@ import com.ecommerce.shoeshop.requestmodel.CheckoutRequest;
 import com.ecommerce.shoeshop.utils.VNPayUtils;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +30,10 @@ import java.util.List;
 
 @Service
 public class OrderService {
+
+    private static final Set<String> VALID_ORDER_STATUS = Set.of(
+        "PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"
+    );
 
     private final OrderRepository orderRepository;
     private final PaymentService paymentService;
@@ -200,6 +210,35 @@ public class OrderService {
         return orderMapper.toDtoList(orders);
     }
 
+    public Page<OrderDTO> getAllOrdersForAdmin(String keyword, String status, String paymentStatus, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        String normalizedStatus = normalizeNullable(status);
+        String normalizedPaymentStatus = normalizeNullable(paymentStatus);
+        return orderRepository
+            .findAllOrdersWithFilters(keyword, normalizedStatus, normalizedPaymentStatus, pageable)
+            .map(orderMapper::toDto);
+    }
+
+    public OrderDTO getOrderDetailForAdmin(int orderId) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+        return orderMapper.toDto(order);
+    }
+
+    @Transactional
+    public OrderDTO updateOrderStatusForAdmin(int orderId, String status) {
+        String normalizedStatus = normalizeStatusRequired(status);
+        if (!VALID_ORDER_STATUS.contains(normalizedStatus)) {
+            throw new RuntimeException("Invalid order status. Allowed values: " + VALID_ORDER_STATUS);
+        }
+
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatus(normalizedStatus);
+        order.setUpdatedAt(LocalDateTime.now());
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
     public OrderDTO getOrderByIdForUser(int orderId, int userId, boolean isAdmin) {
         Order order = isAdmin
             ? orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"))
@@ -244,5 +283,20 @@ public class OrderService {
         System.out.println("=================================");
 
         return finalUrl;
+    }
+
+    private String normalizeNullable(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim().toUpperCase(Locale.ROOT);
+    }
+
+    private String normalizeStatusRequired(String value) {
+        String normalized = normalizeNullable(value);
+        if (normalized == null) {
+            throw new RuntimeException("Status is required");
+        }
+        return normalized;
     }
 }
