@@ -64,5 +64,13 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 			"AND p.id <> :productId " +
 			"ORDER BY FUNCTION('RAND')")
 	List<Product> findRelatedByBrand(@Param("brandId") int brandId, @Param("productId") int productId, Pageable pageable);
+
+	// Lấy danh sách tất cả các màu độc nhất đang có trong kho hàng
+	@Query("SELECT DISTINCT v.color FROM ProductVariant v WHERE v.color IS NOT NULL")
+	List<String> findDistinctColors();
+
+	// Lấy danh sách tất cả các kích thước Size độc nhất đang có trong kho hàng
+	@Query("SELECT DISTINCT v.size FROM ProductVariant v WHERE v.size IS NOT NULL")
+	List<String> findDistinctSizes();
 }
 

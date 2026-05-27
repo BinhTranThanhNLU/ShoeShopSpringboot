@@ -1,6 +1,7 @@
 package com.ecommerce.shoeshop.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -40,11 +41,15 @@ public class Product {
     @Column(name = "discount_percent")
     private Integer discountPercent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductVariant> variants;
+    private List<ProductVariant> variants = new ArrayList<>(); // <-- BỔ SUNG KHỞI TẠO MẢNG RỖNG VÀO ĐÂY
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductImage> images;
+    @Builder.Default
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
+
+
     public BigDecimal getDiscountedPrice() {
         if (discountPercent == null || discountPercent <= 0) {
             return price;

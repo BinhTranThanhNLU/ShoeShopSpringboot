@@ -1,10 +1,6 @@
 package com.ecommerce.shoeshop.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -12,20 +8,22 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductDTO {
 
-    private int id;
+    private Integer id;
     private String name;
     private String brand;
-    private BigDecimal price;
     private String category;
+    private BigDecimal price;
     private Integer discountPercent;
     private BigDecimal discountedPrice;
     private String description;
-    private int totalQuantity;
+    private Integer totalQuantity;
+    private Boolean status;
+    private Integer stock;
+
     private List<ProductImageDTO> image;
     private List<ProductVariantDTO> variants;
-    private int stock;
-    private boolean status;
 
 }
