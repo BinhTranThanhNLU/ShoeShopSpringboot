@@ -43,21 +43,36 @@ public class ProductService {
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
+    private final AiRecommendationService aiRecommendationService;
+
     public ProductService(ProductVariantRepository productVariantRepository,
         ProductRepository productRepository,
         ProductMapper productMapper,
         BrandRepository brandRepository,
         CategoryRepository categoryRepository,
-        ProductImageRepository productImageRepository) {
+        ProductImageRepository productImageRepository, AiRecommendationService aiRecommendationService) {
 
         this.productVariantRepository = productVariantRepository;
         this.productRepository = productRepository;
         this.productMapper = productMapper;
 
-        // Đã gán giá trị từ Constructor giúp dẹp hoàn toàn lỗi "Cannot resolve"
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
         this.productImageRepository = productImageRepository;
+
+        this.aiRecommendationService = aiRecommendationService;
+    }
+
+    public List<ProductDTO> getRecommendedProducts(int productId) {
+        List<Integer> recommendedIds = aiRecommendationService.getRecommendedProductIds(productId);
+
+        if (recommendedIds == null || recommendedIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<ProductDTO> recommendedProducts = productMapper.toDtoList(productRepository.findAllById(recommendedIds));
+
+        return recommendedProducts;
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -108,7 +123,6 @@ public class ProductService {
         return productMapper.toDto(productRepository.findById(id).get());
     }
 
-
     public ProductVariant getProductVariantEntityById(int variantId) {
         return productVariantRepository.findById(variantId)
             .orElseThrow(() -> new RuntimeException("Product variant not found"));
@@ -118,6 +132,7 @@ public class ProductService {
         ProductVariant productVariant = getProductVariantEntityById(idVariant);
         productVariant.decrementStockQuantity(quantity);
     }
+
     public Page<ProductDTO> getAllProductsForAdmin(String keyword, String brand, String category, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Product> productPage = productRepository.findAllProductsForAdmin(keyword, brand, category, pageable);
@@ -194,6 +209,7 @@ public class ProductService {
         }
         return productMapper.toDto(savedProduct);
     }
+
     @Transactional
     public ProductDTO updateProduct(int id, ProductDTO dto, MultipartFile imageFile)
         throws IOException, java.io.IOException {
@@ -222,6 +238,7 @@ public class ProductService {
         Product updatedProduct = productRepository.save(product);
         return productMapper.toDto(updatedProduct);
     }
+
     // 4. Xóa sản phẩm ra khỏi hệ thống
     @Transactional
     public void deleteProduct(int id) {

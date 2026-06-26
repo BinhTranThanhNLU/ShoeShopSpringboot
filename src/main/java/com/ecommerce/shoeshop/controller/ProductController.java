@@ -1,13 +1,11 @@
 package com.ecommerce.shoeshop.controller;
 
 import com.ecommerce.shoeshop.dto.ProductDTO;
-import com.ecommerce.shoeshop.entity.Product;
 import com.ecommerce.shoeshop.responsemodel.ProductPageResponse;
 import com.ecommerce.shoeshop.service.BrandService;
 import com.ecommerce.shoeshop.service.CategoryService;
 import com.ecommerce.shoeshop.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -16,7 +14,8 @@ import java.util.List;
 @CrossOrigin(origins = {
     "http://localhost:5173",
     "https://sandbox-down-primarily.ngrok-free.dev"
-}, allowCredentials = "true")@RestController
+}, allowCredentials = "true")
+@RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
@@ -28,6 +27,12 @@ public class ProductController {
         this.productService = productService;
         this.brandService = brandService;
         this.categoryService = categoryService;
+    }
+
+    @GetMapping("/{id}/recommendations")
+    public ResponseEntity<List<ProductDTO>> getProductRecommendations(@PathVariable("id") int productId) {
+        List<ProductDTO> recommendations = productService.getRecommendedProducts(productId);
+        return ResponseEntity.ok(recommendations);
     }
 
     @GetMapping
