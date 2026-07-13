@@ -1,0 +1,148 @@
+﻿id_review,rating,comment,id_product,id_user,created_at,updated_at,sentiment
+2,5,Sản phẩm này sử dụng rất tốt !!!,19,4,6/6/2026 7:44,13/7/2026 15:00:03,Positive
+3,5,San pham rat tot,18,4,6/6/2026 15:16,13/7/2026 15:00:14,Positive
+4,5,Sản phẩm này rất tốt,57,4,12/7/2026 11:45,13/7/2026 15:00:18,Positive
+5,5,Tôi rất là thích sản phẩm như thế này,91,4,12/7/2026 11:45,13/7/2026 15:00:20,Positive
+6,5,"Giày rất êm, ôm chân tốt, đá gần 2 tiếng mà không bị đau. Độ bám sân cực kỳ ổn, sẽ tiếp tục ủng hộ shop.",11,4,12/7/2026 11:56,13/7/2026 15:00:22,Positive
+7,5,"Chất lượng vượt mong đợi. Đường may chắc chắn, form đẹp, mang lên nhìn rất xịn. Giao hàng nhanh và đóng gói cẩn thận.",13,4,12/7/2026 11:56,13/7/2026 15:00:31,Positive
+8,4,"Giày nhẹ, chạy khá thoải mái, sút bóng cũng có cảm giác tốt. Chỉ tiếc dây giày hơi ngắn một chút nhưng không ảnh hưởng nhiều.",12,4,12/7/2026 11:56,13/7/2026 15:00:35,Positive
+9,3,"Giày nhìn đẹp giống hình, mang cũng ổn nhưng phần mũi hơi cứng nên cần đi vài buổi mới thấy dễ chịu hơn.",14,4,12/7/2026 11:56,13/7/2026 15:01:11,Neutral
+10,3,"Chất lượng ở mức chấp nhận được so với giá. Đế bám sân bình thường, không quá nổi bật nhưng cũng không có gì để chê nhiều.",15,4,12/7/2026 11:57,13/7/2026 15:01:26,Neutral
+11,2,Mang được khoảng một tuần thì phần keo ở mũi giày bắt đầu bong. Khá thất vọng vì nghĩ sản phẩm sẽ bền hơn.,16,4,12/7/2026 11:57,13/7/2026 15:01:39,Negative
+12,2,"Form giày không đúng như mô tả, mang hơi chật dù đã chọn đúng size. Đổi trả hơi mất thời gian.",17,4,12/7/2026 11:57,13/7/2026 15:01:41,Negative
+13,1,"Rất thất vọng. Giày nhanh xuống cấp, đế bị mòn chỉ sau vài trận đá sân cỏ nhân tạo. Chất lượng không tương xứng với giá tiền",20,4,12/7/2026 11:57,13/7/2026 15:01:43,Negative
+14,5,"Đá sân cỏ nhân tạo rất bám, đổi hướng nhanh mà không bị trượt. Mang rất thích, đúng với kỳ vọng.",12,22,12/7/2026 12:04,13/7/2026 15:02:11,Positive
+15,5,"Đá sân cỏ nhân tạo rất bám, đổi hướng nhanh mà không bị trượt. Mang rất thích, đúng với kỳ vọng.",13,22,12/7/2026 12:05,13/7/2026 15:02:14,Positive
+16,4,"Thiết kế đẹp, màu sắc giống hình, đi khá nhẹ chân. Nếu đệm gót dày hơn một chút thì sẽ hoàn hảo.",15,22,12/7/2026 12:05,13/7/2026 15:02:17,Positive
+17,4,"Đã mua lần thứ hai vì lần đầu dùng rất bền. Lần này chất lượng vẫn ổn định, giao hàng đúng hẹn.",16,22,12/7/2026 12:05,13/7/2026 15:02:19,Positive
+18,3,"Giày ở mức khá, mang đá cuối tuần thì ổn. Chưa thấy điểm gì quá nổi bật nhưng cũng không có lỗi đáng kể.",17,22,12/7/2026 12:05,13/7/2026 15:02:30,Neutral
+19,3,"Chất liệu tạm được, đường may nhìn ổn. Tuy nhiên phần cổ giày hơi cứng nên ban đầu mang chưa quen.",18,22,12/7/2026 12:05,13/7/2026 15:02:32,Neutral
+20,2,Mới mang vài trận thì đế có dấu hiệu bong keo. Hy vọng shop cải thiện chất lượng ở các lô sau.,19,22,12/7/2026 12:05,13/7/2026 15:02:37,Positive
+21,2,"Màu thực tế hơi khác ảnh quảng cáo, nhìn không đẹp như mong đợi. Mang cũng không được ôm chân lắm.",20,22,12/7/2026 12:06,13/7/2026 15:02:39,Positive
+22,1,"Trải nghiệm không tốt. Giày cứng, nóng chân và rất dễ trơn khi sân hơi ẩm. Chắc sẽ không mua lại lần nữa.",91,22,12/7/2026 12:06,13/7/2026 15:02:40,Positive
+23,2,Giày nhìn đẹp nhưng mang không ôm chân như mình mong đợi. Chạy nhiều hơi bị cấn ở phần gót.,13,18,12/7/2026 12:11,13/7/2026 15:02:44,Positive
+24,5,Giày nhìn đẹp nhưng mang không ôm chân như mình mong đợi. Chạy nhiều hơi bị cấn ở phần gót.,14,18,12/7/2026 12:11,13/7/2026 15:02:45,Positive
+25,3,"Giao hàng đúng hẹn, đóng gói cẩn thận. Chất lượng ở mức ổn, phù hợp với tầm giá.",15,18,12/7/2026 12:12,13/7/2026 15:03:02,Neutral
+26,4,"Mang khá nhẹ, chạy tốc độ cao vẫn thấy thoải mái. Chỉ mong có thêm nhiều màu để lựa chọn.",16,18,12/7/2026 12:12,13/7/2026 15:03:12,Positive
+27,1,Mua chưa được hai tuần thì đường chỉ đã bung ở bên hông giày. Khá thất vọng về độ bền.,17,18,12/7/2026 12:12,13/7/2026 15:03:23,Negative
+28,5,"Thiết kế đẹp, form chuẩn, mang vào rất vừa chân. Đồng đội ai cũng khen đôi này nhìn đẹp.",18,18,12/7/2026 12:12,13/7/2026 15:03:29,Positive
+29,3,Giày không có điểm gì quá nổi bật nhưng cũng không gặp lỗi khi sử dụng. Tạm ổn cho người mới chơi.,19,18,12/7/2026 12:12,13/7/2026 15:03:34,Neutral
+30,2,Size hơi nhỏ hơn thông tin shop cung cấp nên mang khá chật. Phải đổi sang size lớn hơn mới vừa.,20,18,12/7/2026 12:12,13/7/2026 15:03:44,Negative
+31,4,"Đã sử dụng hơn một tháng, chất lượng vẫn rất tốt. Đế chưa bị mòn nhiều và keo vẫn chắc chắn.",91,18,12/7/2026 12:13,13/7/2026 15:03:52,Positive
+32,4,"Chất liệu khá mềm, mang lâu không bị cấn chân. Nếu giá rẻ hơn một chút thì quá tuyệt.",13,16,12/7/2026 12:18,13/7/2026 15:03:53,Positive
+33,2,"Giày đi không được êm như mình kỳ vọng, sau mỗi trận chân hơi bị mỏi.",14,16,12/7/2026 12:18,13/7/2026 15:03:57,Negative
+34,3,"Sản phẩm đúng mô tả, giao hàng nhanh. Chất lượng bình thường, không quá nổi bật.",15,16,12/7/2026 12:18,13/7/2026 15:04:47,Neutral
+35,5,"Đôi giày này thật sự đáng tiền. Độ bám sân rất tốt, tăng tốc và đổi hướng đều rất tự tin.",16,16,12/7/2026 12:18,13/7/2026 15:04:50,Positive
+36,1,"Keo dán bị hở ngay sau vài lần sử dụng, chất lượng hoàn thiện chưa tốt. Mình sẽ không mua lại.",17,16,12/7/2026 12:19,13/7/2026 15:04:58,Negative
+37,4,"Màu sắc đẹp hơn cả trong ảnh, mang lên nhìn rất thể thao. Bạn bè đều hỏi mua ở đâu.",18,16,12/7/2026 12:19,13/7/2026 15:05:02,Positive
+38,3,Form giày ổn nhưng phần mũi hơi cứng. Đi quen vài buổi thì cảm giác dễ chịu hơn.,19,16,12/7/2026 12:19,13/7/2026 15:05:09,Neutral
+39,5,"Đã dùng gần hai tháng để đá sân cỏ nhân tạo, giày vẫn rất bền, chưa có dấu hiệu bong keo hay sứt chỉ.",20,16,12/7/2026 12:19,13/7/2026 15:05:15,Positive
+40,2,Đóng gói cẩn thận nhưng size hơi rộng so với bảng hướng dẫn. Mang thi đấu không được chắc chân.,91,16,12/7/2026 12:19,13/7/2026 15:05:18,Negative
+41,4,"Giày đẹp hơn mình nghĩ, mang đá khá thích. Chỉ có điều giao hàng chậm hơn dự kiến 1 ngày.",13,15,12/7/2026 12:24,13/7/2026 15:05:30,Positive
+42,2,Form giày đẹp nhưng mình mang hơi đau ngón chân cái. Chắc do ko hợp form chân của mình.,14,15,12/7/2026 12:25,13/7/2026 15:05:35,Negative
+43,3,"Nói chung ổn, đá sân phủi cuối tuần thì ok. Chưa thấy có gì nổi bật lắm.",15,15,12/7/2026 12:25,13/7/2026 15:05:40,Neutral
+44,5,"Đi rất êm, bám sân tốt, đá xoay người khá mượt. Sẽ giới thiệu cho ae trong đội luôn.",16,15,12/7/2026 12:25,13/7/2026 15:05:44,Positive
+45,1,Shop rep tin nhắn khá nhanh nhưng đôi mình nhận bị lỗi bong keo ở phần mũi. Hơi tiếc vì nhìn mẫu mã rất đẹp.,17,15,12/7/2026 12:25,13/7/2026 15:05:49,Negative
+46,4,"Mới mang thử 2 trận thấy khá ngon, chân ko bị rát như đôi cũ. Hi vọng dùng lâu vẫn bền.",18,15,12/7/2026 12:25,13/7/2026 15:05:53,Positive
+47,3,Chất lượng tạm ổn so với giá. Nếu phần lót giày êm hơn chút thì sẽ đáng tiền hơn.,19,15,12/7/2026 12:25,13/7/2026 15:05:58,Neutral
+48,2,"Màu thực tế hơi khác ảnh, lúc đầu hơi hụt hẫng. Được cái shop hỗ trợ đổi hàng cũng nhanh.",20,15,12/7/2026 12:25,13/7/2026 15:06:03,Negative
+49,5,"Lúc đầu mình đặt nhầm size nên hơi lo, nhưng shop hỗ trợ đổi rất nhiệt tình. Giày mang vừa chân, đá cực kỳ thích.",91,15,12/7/2026 12:25,13/7/2026 15:06:06,Positive
+50,3,"Giày nhìn ổn, mang đá khoảng 1 tiếng thì vẫn thoải mái. Chỉ hơi bí chân nếu đá vào buổi trưa.",13,11,12/7/2026 12:30,13/7/2026 15:06:22,Neutral
+51,5,"Quá ưng luôn, giày nhẹ, ôm chân và bám sân cực tốt. Đá hết trận mà chân vẫn rất dễ chịu.",14,11,12/7/2026 12:30,13/7/2026 15:06:26,Positive
+52,2,"Chất liệu ko tệ nhưng phần gót hơi cứng, đi lâu bị đau. Mình nghĩ cần cải thiện thêm.",15,11,12/7/2026 12:31,13/7/2026 15:06:34,Negative
+53,4,"Màu sắc đúng như hình, mang lên nhìn rất đẹp. Giao hàng nhanh hơn mình tưởng.",16,11,12/7/2026 12:31,13/7/2026 15:06:41,Positive
+54,1,Mình nhận hàng thì hộp bị móp khá nhiều. Giày cũng bị trầy nhẹ nên cảm giác không hài lòng.,17,11,12/7/2026 12:31,13/7/2026 15:06:45,Negative
+55,5,"Đã mua đôi thứ hai cho em trai, cả hai đều thấy rất ok. Với tầm giá này thì quá đáng tiền.",18,11,12/7/2026 12:31,13/7/2026 15:06:51,Positive
+56,3,"Đế bám sân ở mức khá, không quá xuất sắc nhưng vẫn đủ dùng khi đá phong trào.",19,11,12/7/2026 12:31,13/7/2026 15:07:08,Neutral
+57,2,"Shop đóng gói cẩn thận, nhân viên tư vấn nhiệt tình. Tiếc là đôi giày hơi rộng nên mình mang không chắc chân.",20,11,12/7/2026 12:31,13/7/2026 15:07:43,Negative
+58,4,Mang vài buổi đầu hơi cứng xíu nhưng sau đó thì rất ôm chân. Nhìn chung mình khá hài lòng với sản phẩm.,91,11,12/7/2026 12:32,13/7/2026 15:07:48,Positive
+59,4,"Giày mang khá thích, chạy nước rút thấy nhẹ chân. Chỉ tiếc là hộp giao tới hơi móp.",13,23,12/7/2026 12:37,13/7/2026 15:07:52,Positive
+60,2,"Mẫu đẹp nhưng mình đi bị cấn ở mắt cá, chắc do form không hợp chân.",14,23,12/7/2026 12:37,13/7/2026 15:07:58,Negative
+61,3,"Sản phẩm đúng mô tả, chất lượng bình thường. Đá giải trí cuối tuần thì ổn.",15,23,12/7/2026 12:38,13/7/2026 15:08:06,Neutral
+62,5,"Quá xịn luôn, đế bám sân cực tốt. Đá liên tục hơn 2 tiếng mà chân vẫn thoải mái.",16,23,12/7/2026 12:38,13/7/2026 15:08:10,Positive
+63,1,"Đợi hàng khá lâu, lúc nhận còn bị giao nhầm màu. Shop đổi lại nhưng trải nghiệm không tốt.",17,23,12/7/2026 12:38,13/7/2026 15:08:14,Negative
+64,4,"Đi êm, ôm chân vừa phải. Giá này thì mình thấy rất đáng mua.",18,23,12/7/2026 12:38,13/7/2026 15:09:04,Positive
+65,3,Không quá nổi bật nhưng cũng không có điểm gì để chê nhiều. Tạm ổn.,19,23,12/7/2026 12:38,13/7/2026 15:09:08,Neutral
+66,5,"Mình rất thích thiết kế của đôi này, nhìn ngoài đẹp hơn ảnh nhiều.",20,23,12/7/2026 12:38,13/7/2026 15:09:13,Positive
+67,2,"Sau vài trận thì phần lót hơi xẹp, cảm giác không còn êm như ban đầu.",91,23,12/7/2026 12:38,13/7/2026 15:09:26,Negative
+68,3,"Đế bám sân ở mức khá, nếu sân ướt thì vẫn hơi trơn.",13,24,12/7/2026 12:44,13/7/2026 15:09:30,Neutral
+69,5,"Shop tư vấn size cực chuẩn, nhận về mang vừa in. Quá hài lòng.",14,24,12/7/2026 12:44,13/7/2026 15:09:36,Positive
+70,2,"Chất liệu ổn nhưng keo ở mũi giày chưa đẹp, nhìn hơi cẩu thả.",15,24,12/7/2026 12:44,13/7/2026 15:10:06,Negative
+71,4,"Mình mua để đá sân cỏ nhân tạo, dùng hơn tháng vẫn chưa thấy bong keo.",16,24,12/7/2026 12:44,13/7/2026 15:10:15,Positive
+72,1,Giày bị lỗi đường may ngay từ lúc mở hộp. Shop có xin lỗi nhưng mình vẫn khá thất vọng.,17,24,12/7/2026 12:44,13/7/2026 15:10:13,Negative
+73,5,"Đúng là tiền nào của nấy. Mang lên rất chắc chân, sút bóng cực đã.",18,24,12/7/2026 12:44,13/7/2026 15:10:18,Positive
+74,3,"Giao hàng nhanh, đóng gói ổn. Giày dùng được nhưng chưa tạo nhiều khác biệt so với đôi cũ.",19,24,12/7/2026 12:45,13/7/2026 15:10:25,Neutral
+75,2,Nhìn thì đẹp đó nhưng đi hơi nóng chân. Có lẽ chất liệu chưa thoáng khí lắm.,20,24,12/7/2026 12:45,13/7/2026 15:10:30,Negative
+76,4,Ae trong đội ai cũng khen đôi này đẹp. Mình mang cũng thấy khá ưng.,91,24,12/7/2026 12:45,13/7/2026 15:10:34,Positive
+77,5,"Ban đầu hơi lo vì mua online, ai ngờ nhận hàng còn đẹp hơn mong đợi. Đáng tiền thật.",13,25,12/7/2026 12:48,13/7/2026 15:10:35,Positive
+78,3,Form giày vừa chân nhưng dây giày hơi ngắn. Không ảnh hưởng nhiều đến trải nghiệm.,14,25,12/7/2026 12:48,13/7/2026 15:11:09,Neutral
+79,2,"Shop rep nhanh và nhiệt tình, tiếc là mình nhận đôi bị lệch size nên phải đổi.",15,25,12/7/2026 12:49,13/7/2026 15:11:15,Negative
+80,4,"Đế khá bền, mang gần hai tháng vẫn chưa mòn nhiều. Rất ok.",16,25,12/7/2026 12:49,13/7/2026 15:11:19,Positive
+81,1,Mình kỳ vọng nhiều hơn. Sau vài buổi đá thì keo đã bắt đầu bong ở phần hông.,17,25,12/7/2026 12:49,13/7/2026 15:11:22,Negative
+82,5,"Mang vào phát là thấy khác hẳn đôi cũ, ôm chân với nhẹ cực luôn. Sẽ mua lại nếu cần.",18,25,12/7/2026 12:49,13/7/2026 15:11:25,Positive
+83,3,"Giá hợp lý, chất lượng tương xứng. Không quá xuất sắc nhưng đáng để cân nhắc.",19,25,12/7/2026 12:49,13/7/2026 15:11:28,Neutral
+84,2,Giày đẹp nhưng giao thiếu dây dự phòng. Shop xử lý cũng nhanh nên đỡ bực hơn.,20,25,12/7/2026 12:49,13/7/2026 15:11:31,Negative
+85,4,"Mình đá vị trí tiền đạo nên cần giày nhẹ, đôi này đáp ứng khá tốt. Chỉ hơi cứng lúc mới mang.",91,25,12/7/2026 12:49,13/7/2026 15:11:34,Positive
+86,5,"xịn nha ae, đá ngon thật 🔥",13,26,12/7/2026 13:26,13/7/2026 15:11:37,Positive
+87,3,"mới nhận nên chưa test nhiều, để đá vài bữa xem sao",14,26,12/7/2026 13:27,13/7/2026 15:11:40,Neutral
+88,2,đi đc 2 trận là thấy hơi bong keo rồi,15,26,12/7/2026 13:27,13/7/2026 15:11:45,Negative
+89,5,"quá ok, đáng tiền luôn",16,26,12/7/2026 13:27,13/7/2026 15:11:49,Positive
+90,4,"đẹp hơn hình, giao hơi trễ xíu",17,26,12/7/2026 13:27,13/7/2026 15:11:50,Positive
+91,1,"thất vọng ghê, mang đau chân quá",18,26,12/7/2026 13:27,13/7/2026 15:11:52,Negative
+92,5,👍👍👍,19,26,12/7/2026 13:27,13/7/2026 15:11:54,Positive
+93,3,cũng được,20,26,12/7/2026 13:27,13/7/2026 15:11:58,Neutral
+94,5,"mua cho ông anh, ảnh khen ok",91,26,12/7/2026 13:28,13/7/2026 15:12:05,Positive
+95,4,"đá sân cỏ nhân tạo khá ổn, bám sân tốt",13,27,12/7/2026 13:30,13/7/2026 15:12:07,Positive
+96,2,ko hợp chân mình nên đi hơi khó chịu,14,27,12/7/2026 13:30,13/7/2026 15:12:11,Negative
+97,5,hàng tới rồi nha,15,27,12/7/2026 13:30,13/7/2026 15:12:14,Positive
+98,3,để mang thêm thời gian rồi đánh giá tiếp,16,27,12/7/2026 13:31,13/7/2026 15:12:18,Neutral
+99,5,okela 😂,17,27,12/7/2026 13:31,13/7/2026 15:12:20,Positive
+100,1,"giao sai size, phải đổi mất mấy ngày",18,27,12/7/2026 13:31,13/7/2026 15:12:24,Negative
+101,5,"shop rep nhanh, hỗ trợ nhiệt tình",19,27,12/7/2026 13:31,13/7/2026 15:12:25,Positive
+102,5,đẹp,20,27,12/7/2026 13:31,13/7/2026 15:12:26,Positive
+103,3,tạm ổn với mức giá,91,27,12/7/2026 13:31,13/7/2026 15:12:30,Neutral
+104,5,ầwefa123 😂,13,28,12/7/2026 13:36,13/7/2026 15:12:35,Positive
+105,4,"cho 5 sao trước nha, dùng thêm sẽ quay lại review",14,28,12/7/2026 13:36,13/7/2026 15:12:56,Positive
+106,2,nhìn đẹp nhưng mang ko quen,15,28,12/7/2026 13:36,13/7/2026 15:13:00,Negative
+107,5,"ae nên mua thử, đáng tiền phết",16,28,12/7/2026 13:36,13/7/2026 15:13:02,Positive
+108,3,......,18,28,12/7/2026 13:37,13/7/2026 15:13:06,Neutral
+109,1,chất lượng ko như mình tưởng,19,28,12/7/2026 13:37,13/7/2026 15:13:09,Negative
+110,5,chất lượng ko như mình tưởng,20,28,12/7/2026 13:37,13/7/2026 15:13:12,Positive
+111,4,"giày nhẹ, chạy thích thật",91,28,12/7/2026 13:37,13/7/2026 15:13:14,Positive
+112,5,aaaaaaaa,17,28,12/7/2026 13:37,13/7/2026 15:13:15,Positive
+113,5,"Đá sân 7 quá đã luôn, bám sân cực ngon 🔥",13,29,12/7/2026 13:55,13/7/2026 15:13:17,Positive
+114,2,"Đi hơi cấn gót chân, chắc mình ko hợp form này.",15,29,12/7/2026 13:55,13/7/2026 15:13:20,Negative
+115,3,"Mới nhận hôm qua, để dùng thêm rồi quay lại review.",17,29,12/7/2026 13:55,13/7/2026 15:13:29,Neutral
+116,4,"Mua cho em trai, nó khen mang nhẹ chân lắm.",18,29,12/7/2026 13:55,13/7/2026 15:13:32,Positive
+117,2,"Chất lượng không như mình kỳ vọng, hơi thất vọng.",19,29,12/7/2026 13:55,13/7/2026 15:13:45,Negative
+118,5,Giá này mà chất lượng vậy là quá ổn áp.,91,29,12/7/2026 13:55,13/7/2026 15:13:33,Positive
+119,3,"Đúng mô tả, không có gì đặc biệt.",20,29,12/7/2026 13:55,13/7/2026 15:13:56,Neutral
+120,2,Đế hơi cứng nên chạy nhiều bị mỏi chân,14,29,12/7/2026 13:56,13/7/2026 15:13:47,Negative
+121,5,"shop có tâm, rep tin nhắn nhanh 👍",16,29,12/7/2026 13:56,13/7/2026 15:13:35,Positive
+122,4,Đôi này nhìn ngoài đẹp hơn ảnh nhiều.,13,30,12/7/2026 14:08,13/7/2026 15:13:38,Positive
+123,3,"Giao hàng đúng hẹn, còn chất lượng thì để xem thêm.",15,30,12/7/2026 14:08,13/7/2026 15:13:58,Neutral
+124,2,Đi được vài trận thì phần lót hơi xẹp.,17,30,12/7/2026 14:09,13/7/2026 15:13:50,Negative
+125,5,"Mê đôi này luôn, đá tự tin hẳn 😂",18,30,12/7/2026 14:09,13/7/2026 15:13:37,Positive
+126,1,"Nhận hàng bị trầy nhẹ, mở hộp ra hơi hụt hẫng.",19,30,12/7/2026 14:09,13/7/2026 15:13:51,Negative
+127,4,"Mang khá ôm chân, sút bóng có cảm giác tốt.",20,30,12/7/2026 14:09,13/7/2026 15:14:03,Positive
+128,3,"Cũng được, không quá xuất sắc nhưng dùng ổn.",91,30,12/7/2026 14:09,13/7/2026 15:14:01,Neutral
+129,5,okela 😁,16,30,12/7/2026 14:09,13/7/2026 15:13:40,Positive
+130,2,Shop hỗ trợ tốt nhưng đôi này mình mang vẫn thấy hơi đau.,14,30,12/7/2026 14:09,13/7/2026 15:13:53,Negative
+131,5,Đã nhận hàng.,13,31,12/7/2026 14:13,13/7/2026 15:14:35,Positive
+132,4,Mang gần tháng rồi vẫn chưa thấy bong keo.,14,31,12/7/2026 14:13,13/7/2026 15:14:38,Positive
+133,3,Mua lúc sale nên thấy khá hời.,15,31,12/7/2026 14:13,13/7/2026 15:14:56,Neutral
+134,2,"Màu ngoài hơi khác hình, hơi tiếc.",17,31,12/7/2026 14:13,13/7/2026 15:14:47,Negative
+135,5,ae nào đá phủi thì nên thử đôi này.,18,31,12/7/2026 14:13,13/7/2026 15:14:39,Positive
+136,1,Giao sai size nhưng shop đổi cũng nhanh.,19,31,12/7/2026 14:13,13/7/2026 15:14:48,Negative
+137,4,Bố mình mang thử cũng khen êm chân.,91,31,12/7/2026 14:13,13/7/2026 15:14:40,Positive
+138,3,......,20,31,12/7/2026 14:13,13/7/2026 15:14:57,Neutral
+139,5,xịn xò luôn nha ❤️,16,31,12/7/2026 14:14,13/7/2026 15:14:41,Positive
+140,5,"Đá cả buổi mà chân vẫn thoải mái, đáng mua thật.",13,32,12/7/2026 14:23,13/7/2026 15:14:42,Positive
+141,2,"Không hợp chân mình nên đành cất tủ, hơi tiếc.",15,32,12/7/2026 14:23,13/7/2026 15:14:52,Negative
+142,3,"Hàng giống hình, chất lượng đúng tầm giá.",17,32,12/7/2026 14:23,13/7/2026 15:14:58,Neutral
+143,4,"Giao nhanh hơn dự kiến, đóng gói cũng cẩn thận",18,32,12/7/2026 14:23,13/7/2026 15:14:43,Positive
+144,3,asdf123 😂,19,32,12/7/2026 14:23,13/7/2026 15:14:59,Neutral
+145,5,"Mua tặng bạn, bạn bảo đi rất thích.",20,32,12/7/2026 14:23,13/7/2026 15:15:07,Positive
+146,2,Form đẹp nhưng phần mũi hơi chật với mình.,16,32,12/7/2026 14:23,13/7/2026 15:15:14,Negative
+147,4,"Lần đầu mua của shop, trải nghiệm khá tốt.",91,32,12/7/2026 14:23,13/7/2026 15:15:08,Positive
+148,3,Chờ đá thêm vài trận mới biết có bền không.,14,32,12/7/2026 14:24,13/7/2026 15:15:10,Positive

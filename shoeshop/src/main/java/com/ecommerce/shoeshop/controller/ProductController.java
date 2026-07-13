@@ -2,9 +2,11 @@ package com.ecommerce.shoeshop.controller;
 
 import com.ecommerce.shoeshop.dto.ProductDTO;
 import com.ecommerce.shoeshop.responsemodel.ProductPageResponse;
+import com.ecommerce.shoeshop.responsemodel.TopRatedProductDTO;
 import com.ecommerce.shoeshop.service.BrandService;
 import com.ecommerce.shoeshop.service.CategoryService;
 import com.ecommerce.shoeshop.service.ProductService;
+import com.ecommerce.shoeshop.service.SentimentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +24,20 @@ public class ProductController {
     private final ProductService productService;
     private final BrandService brandService;
     private final CategoryService categoryService;
+    private final SentimentService sentimentService;
 
-    public ProductController(ProductService productService, BrandService brandService, CategoryService categoryService) {
+    public ProductController(ProductService productService, BrandService brandService, CategoryService categoryService, SentimentService sentimentService) {
         this.productService = productService;
         this.brandService = brandService;
         this.categoryService = categoryService;
+        this.sentimentService = sentimentService;
+    }
+
+    // endpoint to get products top-rated to fetch in home page
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<List<TopRatedProductDTO>> getTopRatedProducts(@RequestParam(defaultValue = "6") int limit) {
+        return ResponseEntity.ok(sentimentService.getTopRatedProducts(limit));
     }
 
     @GetMapping("/{id}/recommendations")

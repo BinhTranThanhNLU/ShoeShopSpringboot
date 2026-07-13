@@ -1,9 +1,15 @@
 package com.ecommerce.shoeshop.entity;
 
-
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "review")
 public class Review {
@@ -33,25 +39,9 @@ public class Review {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    @Column(name = "sentiment")
+    private String sentiment;
 
-    public int getRating() { return rating; }
-    public void setRating(int rating) { this.rating = rating; }
 
-    public String getComment() { return comment; }
-    public void setComment(String comment) { this.comment = comment; }
-
-    public Product getProduct() { return product; }
-    public void setProduct(Product product) { this.product = product; }
-
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
 

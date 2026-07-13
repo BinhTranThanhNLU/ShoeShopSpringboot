@@ -17,6 +17,7 @@ public class ReviewDTO {
     private String userName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String sentiment;
 
 
 }

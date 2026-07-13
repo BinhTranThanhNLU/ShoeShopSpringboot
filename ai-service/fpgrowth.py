@@ -1,10 +1,10 @@
 import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import fpgrowth, association_rules
-from sqlalchemy import create_engine # Import thêm create_engine
+from sqlalchemy import create_engine
 
 def get_recommendations(product_id):
-    # 1. Kết nối vào MySQL bằng SQLAlchemy engine
+    # 1. Kết nối vào MySQL
     # Cấu trúc: mysql+mysqlconnector://<username>:<password>@<host>/<database>
     engine = create_engine("mysql+mysqlconnector://root:@localhost/shoeshop")
 

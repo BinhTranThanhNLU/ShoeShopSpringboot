@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/vpn/return").permitAll()
                         .requestMatchers("/api/vnpay-callback/**").permitAll()
                         .requestMatchers("/checkout/payment-callback/**").permitAll()
-                        .requestMatchers("/api/orders/payment-callback/**").permitAll() // Thêm /api/orders/ vào trước
+                        .requestMatchers("/api/orders/payment-callback/**").permitAll()
                         .requestMatchers("/api/payment/**").permitAll()
                         .requestMatchers("/api/addresses/**").authenticated()
                         .requestMatchers("/api/reviews/product/**").permitAll()

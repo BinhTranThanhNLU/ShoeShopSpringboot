@@ -11,10 +11,8 @@ import com.ecommerce.shoeshop.responsemodel.DashboardOrderStatusDTO;
 import com.ecommerce.shoeshop.responsemodel.DashboardRevenueDTO;
 import com.ecommerce.shoeshop.responsemodel.DashboardSummaryDTO;
 import com.ecommerce.shoeshop.responsemodel.DashboardTopProductDTO;
-import com.ecommerce.shoeshop.service.AdminDashboardService;
-import com.ecommerce.shoeshop.service.CategoryService;
-import com.ecommerce.shoeshop.service.OrderService;
-import com.ecommerce.shoeshop.service.UserService;
+import com.ecommerce.shoeshop.responsemodel.TopRatedProductDTO;
+import com.ecommerce.shoeshop.service.*;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +33,20 @@ public class AdminController {
   private final OrderService orderService;
   private final CategoryService categoryService;
   private final AdminDashboardService adminDashboardService;
+  private final SentimentService sentimentService;
 
-  public AdminController(UserService userService, OrderService orderService, CategoryService categoryService, AdminDashboardService adminDashboardService) {
+  public AdminController(UserService userService, OrderService orderService, CategoryService categoryService, AdminDashboardService adminDashboardService, SentimentService sentimentService) {
     this.userService = userService;
     this.orderService = orderService;
     this.categoryService = categoryService;
     this.adminDashboardService = adminDashboardService;
+    this.sentimentService = sentimentService;
   }
 
+  // -------------------- Quản lý đánh giá bình luận -------------------------------------
+
+  // endpoints for managing reviews and comments can be added here
+  
   // -------------------- Dashboard & Thống kê -------------------------------------
 
   @GetMapping("/dashboard")
@@ -74,6 +78,12 @@ public class AdminController {
   @GetMapping("/dashboard/order-status-counts")
   public ResponseEntity<List<DashboardOrderStatusDTO>> getDashboardOrderStatusCounts() {
     return ResponseEntity.ok(adminDashboardService.getOrderStatusCounts());
+  }
+
+  @GetMapping("/products/top-rated")
+  public ResponseEntity<List<TopRatedProductDTO>> getTopRatedProductsForAdmin(
+      @RequestParam(defaultValue = "10") int limit) {
+    return ResponseEntity.ok(sentimentService.getTopRatedProducts(limit));
   }
 
   // -------------------- Quản lý Category -------------------------------------

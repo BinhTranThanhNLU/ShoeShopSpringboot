@@ -24,12 +24,14 @@ public class ReviewService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final SentimentService sentimentService;
 
-    public ReviewService(ReviewRepository reviewRepository, OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public ReviewService(ReviewRepository reviewRepository, OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository, SentimentService sentimentService) {
         this.reviewRepository = reviewRepository;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.sentimentService = sentimentService;
     }
 
     public List<ReviewDTO> getReviewsByUserId(int userId) {
@@ -68,6 +70,7 @@ public class ReviewService {
         review.setUser(userRepository.getReferenceById(userId));
         review.setRating(req.getRating());
         review.setComment(req.getComment());
+        review.setSentiment(sentimentService.analyzeComment(req.getComment()));
         review.setCreatedAt(LocalDateTime.now());
         review.setUpdatedAt(LocalDateTime.now());
 
@@ -81,7 +84,10 @@ public class ReviewService {
                 .orElseThrow(() -> new RuntimeException("Review not found or access denied"));
 
         if (req.getRating() != null) review.setRating(req.getRating());
-        if (req.getComment() != null) review.setComment(req.getComment());
+        if (req.getComment() != null) {
+            review.setComment(req.getComment());
+            review.setSentiment(sentimentService.analyzeComment(req.getComment()));
+        }
         review.setUpdatedAt(LocalDateTime.now());
 
         return toDto(reviewRepository.save(review));
@@ -104,6 +110,7 @@ public class ReviewService {
         dto.setUserName(r.getUser() != null ? r.getUser().getFullName() : null);
         dto.setCreatedAt(r.getCreatedAt());
         dto.setUpdatedAt(r.getUpdatedAt());
+        dto.setSentiment(r.getSentiment());
         return dto;
     }
 
