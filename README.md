@@ -293,7 +293,7 @@ The following configuration values are used by the project. Some are stored in `
 
 ### Home Page
 
-![Home Page](docs/images/home.pngs)
+![Home Page](docs/images/home.png)
 
 ---
 
