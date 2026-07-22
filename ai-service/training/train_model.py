@@ -26,7 +26,7 @@ from sklearn.metrics import (
 
 
 # =====================================================
-# 1. Đọc Dataset (Sử dụng đường dẫn tuyệt đối)
+# 1. Đọc Dataset
 # =====================================================
 DATASET_PATH = os.path.join(BASE_DIR, "dataset", "reviews_dataset.csv")
 MODEL_DIR = os.path.join(BASE_DIR, "model")
@@ -39,7 +39,7 @@ print("DATASET")
 print("=" * 60)
 
 # =====================================================
-# 2 - 6. Xử lý & Chuẩn bị dữ liệu (Giữ nguyên luồng của bạn)
+# 2 - 6. Xử lý & Chuẩn bị dữ liệu
 # =====================================================
 df = df.dropna(subset=["comment", "sentiment"])
 df["comment"] = df["comment"].astype(str)
